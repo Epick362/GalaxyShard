@@ -6,19 +6,31 @@
 	<title>WebGL Earth</title>
 	<style>
 		body { margin: 0; overflow: hidden; background-color: #000; }
-		.tm  { position: absolute; top: 10px; right: 10px; }
 		.webgl-error { font: 15px/30px monospace; text-align: center; color: #fff; margin: 50px; }
 		.webgl-error a { color: #fff; }
     </style>
 </head>
-<body>
+<body onload="start()" oncontextmenu="return false">
+	<filter id="svg-glow">
+		<fegaussianblur in="SourceAlpha" stddeviation="3">
+			<feoffset dx="2" dy="2" result="offsetblur">
+			<femerge>
+				<femergenode>
+					<femergenode in="SourceGraphic"></femergenode>
+				</femergenode>
+			</femerge>
+			</feoffset>
+		</fegaussianblur>
+	</filter>
 	<div id="webgl"></div>
-	<a href="http://thematicmapping.org/" class="tm">
-		<img src="http://earthatlas.info/img/thematicmapping.png">
-	</a>
+	<script src="js/jquery-2.0.3.min.js"></script>
 	<script src="js/three.min.js"></script>
+	<script src="js/util.js"></script>		
 	<script src="js/Detector.js"></script>		
-	<script src="js/TrackballControls.js"></script>		
+	<script src="js/TrackballControls.js"></script>
+	<script src="js/shaderlist.js"></script>  
+	<script src="js/lensflare.js"></script>  		
+	<script src="js/sun.js"></script>  		
 	<script src="js/earth.js"></script>  
 </body>
 </html>
