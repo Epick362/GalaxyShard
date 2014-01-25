@@ -281,7 +281,7 @@ function makeSun( options ){
 		opacity: 0.8,
 	});
 
-	var lattice = new THREE.Mesh( new THREE.IcosahedronGeometry( radius, 2), latticeMaterial );
+	var lattice = new THREE.Mesh( new THREE.IcosahedronGeometry( 7.35144, 2), latticeMaterial );
 	lattice.update = function(){
 		this.rotation.y += 0.001;
 		this.rotation.z -= 0.0009;

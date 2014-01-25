@@ -8,25 +8,58 @@ var solarSystemData = {
 				"name" : "mercury",
 				"radius" : 4879,
 				"rotation" : 36,
-				"distance" : 5,
-				"revolution" : 25.2,
-				"clouds" : true
+				"distance" : 570.9 / 5,
+				"revolution" : 2.2
 			},
 			{
 				"name" : "venus",
 				"radius" : 12104,
 				"rotation" : 6,
-				"distance" : 10,
-				"revolution" : 1.8,
-				"clouds" : true
+				"distance" : 620.2 / 5,
+				"revolution" : 1.8
 			},
 			{
 				"name" : "earth",
 				"radius" : 12756,
 				"rotation" : 6,
-				"distance" : 15,
+				"distance" : 679.6 / 5,
 				"revolution" : 2,
 				"clouds" : true
+			},
+			{
+				"name" : "mars",
+				"radius" : 6792,
+				"rotation" : 6,
+				"distance" : 730.9 / 5,
+				"revolution" : 2.5
+			},
+			{
+				"name" : "jupiter",
+				"radius" : 142984,
+				"rotation" : 6,
+				"distance" : 778.6 / 5,
+				"revolution" : 1.3
+			},
+			{
+				"name" : "saturn",
+				"radius" : 120536,
+				"rotation" : 6,
+				"distance" : 1433.5 / 5,
+				"revolution" : 1.4
+			},
+			{
+				"name" : "uranus",
+				"radius" : 51118,
+				"rotation" : 6,
+				"distance" : 2872.5 / 5,
+				"revolution" : 1
+			},
+			{
+				"name" : "neptune",
+				"radius" : 49528,
+				"rotation" : 6,
+				"distance" : 4495.1 / 5,
+				"revolution" : 0.8
 			}
 		],
 		"stars": [
@@ -75,7 +108,7 @@ function postStarGradientLoaded() {
 function initWorld() {
 	scene = new THREE.Scene();
 
-	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
+	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100000);
 	camera.position.set(1.5, 1, 1.5);
 
 	renderer = new THREE.WebGLRenderer({antialias: true});
@@ -85,7 +118,7 @@ function initWorld() {
 
 	scene.add( makeSolarSystem(solarSystemData) );
 
-	stars = createStars(400, 64);
+	stars = createStars(100000, 64);
 	scene.add(stars);
 
 	stats = new Stats();
@@ -95,7 +128,7 @@ function initWorld() {
 	document.body.appendChild( stats.domElement );	
 
 	axisHelper = new THREE.AxisHelper( 100 );
-	scene.add( axisHelper );
+	//scene.add( axisHelper );
 
 	controls = new THREE.TrackballControls(camera);
 	controls.target.set(0, 0, 0);

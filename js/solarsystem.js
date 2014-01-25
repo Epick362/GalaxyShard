@@ -35,21 +35,31 @@ function updateSolarSystem() {
 		var time = new Date();
 		angle = time * planet.revolution * 0.00001;
 
-		planet.object.position.set(planet.distance * 10 * Math.cos(angle), 0, planet.distance * 10 * Math.sin(angle));
+		planet.object.position.set(planet.distance * Math.cos(angle), 0, planet.distance * Math.sin(angle));
 	};
 }
 
-function createPlanet(radius) {
-	return new THREE.Mesh(
-		new THREE.SphereGeometry(radius, segments, segments),
-		new THREE.MeshPhongMaterial({
-			map:         THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
-			bumpMap:     THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-			bumpScale:   0.01,
-			specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
-			specular:    new THREE.Color('grey')					
-		})
-	);
+function createPlanet(radius, name) {
+	if(name == "earth") {
+		return new THREE.Mesh(
+			new THREE.SphereGeometry(radius, segments, segments),
+			new THREE.MeshPhongMaterial({
+				map:         THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
+				bumpMap:     THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
+				bumpScale:   0.01,
+				specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
+				specular:    new THREE.Color('grey')					
+			})
+		);
+	}else{
+		return new THREE.Mesh(
+			new THREE.SphereGeometry(radius, segments, segments),
+			new THREE.MeshPhongMaterial({
+				map:         THREE.ImageUtils.loadTexture('images/planets/'+name+'map.jpg'),
+				specular:    new THREE.Color('grey')					
+			})
+		);
+	}
 }
 
 function createClouds(radius) {
@@ -63,22 +73,23 @@ function createClouds(radius) {
 }
 
 function addPlanetToScene(options) {
-	radius = KMToLY(options.radius) * 10;
+	radius = KMToLY(options.radius) * 6;
 	rotation = options.rotation;
 
 	var planet = new THREE.Object3D();
+	var planetOrbit = new THREE.Object3D();
 
-    var object = createPlanet(radius);
+    var object = createPlanet(radius, options.name);
 	object.rotation.y = rotation; 
 	planet.add(object)
 
-	if(options.clouds === true) {
+	if(options.clouds && options.clouds === true) {
 	    var clouds = createClouds(radius);
 		clouds.rotation.y = rotation;
 		//planet.add(clouds)
 	}
 
-	planet.position.x = options.distance * 10;
+	planet.position.x = options.distance;
 
 	return planet;
 }
