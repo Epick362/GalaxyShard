@@ -1,81 +1,84 @@
-function makeSolarSystem(){
-	var solarSystem = new THREE.Object3D();
+var segments = 64;
+var planets = [];
 
-	//var oortCloud = makeOortCloud();
-	//solarSystem.add( oortCloud );
+function makeSolarSystem(data) {
+	solarsystem = new THREE.Object3D();
 
-	// var kuiperBelt = makeKuiperBelt();
-	// solarSystem.add( kuiperBelt );
+	// Create stars in solarsystem
+	for (var i = data.stars.length - 1; i >= 0; i--) {
+		star = makeSun(
+		 	{
+		 		radius: KMToLY(data.stars[i].radius),
+		 		spectral: data.stars[i].spectral
+		 	}
+		 );
+		solarsystem.add(star);
+	};
 
-	// represent the orbit path of planetry bodies in the solar system
-	//	use kilometers and convert to light years
-	//	mercury
-	//var mercuryOrbit = createSpaceRadius( KMToLY(55000000), /*0x90745D*/ 0xffffff );
-	//solarSystem.add( mercuryOrbit );
-	var mercury = createPlanet( 55000000, 2439.7 );
-	solarSystem.add( mercury );
+	// Create planets in solarsystem
+	for (var i = data.planets.length - 1; i >= 0; i--) {
+		planets[i] = data.planets[i];
+		planets[i].object = addPlanetToScene(data.planets[i]);
+		solarsystem.add(planets[i].object);
+	};
 
-	//	venus
-	//var venusOrbit = createSpaceRadius( KMToLY(108000000), /*0x9E4738*/ 0xffffff );
-	//solarSystem.add( venusOrbit );
-	var venus = createPlanet( 108000000, 6051.8 );
-	solarSystem.add( venus );
-
-	//	earth
-	//var earthOrbit = createSpaceRadius( KMToLY(150000000), /*0x887F98*/ 0xffffff );
-	//solarSystem.add( earthOrbit );
-
-	var earth = createPlanet( 150000000, 6378.1 );
-	solarSystem.add( earth );
-
-	//	the moon? sure why not...
-	// you can't even see it...
-	//earth.add( createSpaceRadius( KMToLY(402652), 0xffffff, 16.0 ) );
-
-	//	mars
-	//solarSystem.add( createSpaceRadius( KMToLY(230000000), /*0xCE6747*/ 0xffffff ) );	
-	var mars = createPlanet( 230000000, 3396.2 );
-	solarSystem.add( mars );
-
-	//	jupiter
-	//solarSystem.add( createSpaceRadius( KMToLY(778000000), /*0xCE6747*/ 0xffffff ) );
-	var jupiter = createPlanet( 778000000, 71492.2 );
-	solarSystem.add( jupiter );
-
-	//	saturn
-	//solarSystem.add( createSpaceRadius( KMToLY(1400000000), /*0xCE6747*/ 0xffffff ) );
-	var saturn = createPlanet( 1400000000, 60268 );
-	solarSystem.add( saturn );
-
-	//	uranus
-	//solarSystem.add( createSpaceRadius( KMToLY(3000000000), /*0xCE6747*/ 0xffffff ) );
-	var uranus = createPlanet( 3000000000, 25559 );
-	solarSystem.add( uranus );
-
-	//	neptune
-	//solarSystem.add( createSpaceRadius( KMToLY(4500000000), /*0xCE6747*/ 0xffffff ) );
-	var neptune = createPlanet( 4500000000, 24764  );
-	solarSystem.add( neptune );
-
-	solarSystem.dynamic = true;
-
-	//oortCloud.update = function(){
-	//	if( camera.position.z > 40 && camera.position.z < 600 )
-	//		this.visible = true;
-	//	else
-	//		this.visible = false;
-	//}
-
-	//makeSunEarthDiagram();
-
-	//	pluto?
-	//	still not a planet	
-	return solarSystem;
+	return solarsystem;
 }
 
-function createPlanet( distanceToSunKM, radiusKM ){
-	var planetGeo = new THREE.SphereGeometry( KMToLY( radiusKM ), 12, 8 );
-	var planet = new THREE.Mesh( planetGeo );
-	planet.position.x = KMToLY(distanceToSunKM);
-	return planet;	
+function updateSolarSystem() {
+	updateGyro();
+
+	for (var i = planets.length - 1; i >= 0; i--) {
+		planet = planets[i];
+		planet.object.rotation.y += planet.rotation / 10000;
+
+		var time = new Date();
+		angle = time * planet.revolution * 0.00001;
+
+		planet.object.position.set(planet.distance * 10 * Math.cos(angle), 0, planet.distance * 10 * Math.sin(angle));
+	};
+}
+
+function createPlanet(radius) {
+	return new THREE.Mesh(
+		new THREE.SphereGeometry(radius, segments, segments),
+		new THREE.MeshPhongMaterial({
+			map:         THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
+			bumpMap:     THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
+			bumpScale:   0.01,
+			specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
+			specular:    new THREE.Color('grey')					
+		})
+	);
+}
+
+function createClouds(radius) {
+	return new THREE.Mesh(
+		new THREE.SphereGeometry(radius + radius * 0.003, segments, segments),			
+		new THREE.MeshPhongMaterial({
+			map:         THREE.ImageUtils.loadTexture('images/fair_clouds_4k.png'),
+			transparent: true
+		})
+	);		
+}
+
+function addPlanetToScene(options) {
+	radius = KMToLY(options.radius) * 10;
+	rotation = options.rotation;
+
+	var planet = new THREE.Object3D();
+
+    var object = createPlanet(radius);
+	object.rotation.y = rotation; 
+	planet.add(object)
+
+	if(options.clouds === true) {
+	    var clouds = createClouds(radius);
+		clouds.rotation.y = rotation;
+		//planet.add(clouds)
+	}
+
+	planet.position.x = options.distance * 10;
+
+	return planet;
 }

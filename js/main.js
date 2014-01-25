@@ -2,11 +2,41 @@
 var width  = window.innerWidth,
 	height = window.innerHeight;
 
-// Earth params
-var radius   = KMToLY(12000),
-	segments = 64,
-	rotation = 6,
-	coordinates = [10, 0, 10];  
+var solarSystemData = {
+		"planets" : [
+			{
+				"name" : "mercury",
+				"radius" : 4879,
+				"rotation" : 36,
+				"distance" : 5,
+				"revolution" : 25.2,
+				"clouds" : true
+			},
+			{
+				"name" : "venus",
+				"radius" : 12104,
+				"rotation" : 6,
+				"distance" : 10,
+				"revolution" : 1.8,
+				"clouds" : true
+			},
+			{
+				"name" : "earth",
+				"radius" : 12756,
+				"rotation" : 6,
+				"distance" : 15,
+				"revolution" : 2,
+				"clouds" : true
+			}
+		],
+		"stars": [
+			{
+				"name" : "sun",
+				"radius" : 7.35144e8,
+				"spectral" : 1
+			}
+		]
+	};
 
 var gradientCanvas;
 var gradientImage;
@@ -46,31 +76,17 @@ function initWorld() {
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
-	camera.position.set(coordinates[0] + 1.5, coordinates[1] + 1, coordinates[2] + 1.5);
+	camera.position.set(1.5, 1, 1.5);
 
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(width, height);
 
 	scene.add(new THREE.AmbientLight(0x444444));
 
-	planet = addPlanetToScene(radius, segments, coordinates, true);
-	scene.add(planet)
-
-	sun = makeSun(
-	 	{
-	 		radius: 7.35144,
-	 		spectral: 1
-	 	}
-	 );
-	scene.add(sun);
+	scene.add( makeSolarSystem(solarSystemData) );
 
 	stars = createStars(400, 64);
 	scene.add(stars);
-
-	console.time('solarsystem');
-	//solarsystem = makeSolarSystem();
-	//scene.add(solarsystem);
-	console.timeEnd('solarsystem');
 
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
@@ -82,7 +98,7 @@ function initWorld() {
 	scene.add( axisHelper );
 
 	controls = new THREE.TrackballControls(camera);
-	controls.target.set(coordinates[0], coordinates[1], coordinates[2]);
+	controls.target.set(0, 0, 0);
 
 	webglEl.appendChild(renderer.domElement);
 
@@ -94,11 +110,8 @@ function initWorld() {
 function render() {
 	renderer.clear();
 
+	updateSolarSystem();
 	controls.update();
-	updateGyro();
-	sun.rotation.y += 0.00005;
-	sun.rotation.x += 0.0001;
-	planet.rotation.y += 0.0005;	
 	requestAnimationFrame(render);
 	renderer.render(scene, camera);
 
@@ -116,46 +129,6 @@ function onWindowResize() {
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
-}
-
-function createPlanet(radius, segments) {
-	return new THREE.Mesh(
-		new THREE.SphereGeometry(radius, segments, segments),
-		new THREE.MeshPhongMaterial({
-			map:         THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
-			bumpMap:     THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
-			bumpScale:   0.01,
-			specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
-			specular:    new THREE.Color('grey')					
-		})
-	);
-}
-
-function createClouds(radius, segments) {
-	return new THREE.Mesh(
-		new THREE.SphereGeometry(radius + 0.003, segments, segments),			
-		new THREE.MeshPhongMaterial({
-			map:         THREE.ImageUtils.loadTexture('images/fair_clouds_4k.png'),
-			transparent: true
-		})
-	);		
-}
-
-function addPlanetToScene(radius, segments, position, withclouds) {
-	var planet = new THREE.Object3D();
-
-    var object = createPlanet(radius, segments);
-	object.rotation.y = rotation; 
-	planet.add(object)
-
-	if(withclouds === true) {
-	    var clouds = createClouds(radius, segments);
-		clouds.rotation.y = rotation;
-		planet.add(clouds)
-	}
-
-	planet.position.set(position[0], position[1], position[2]);
-	return planet;
 }
 
 function createStars(radius, segments) {

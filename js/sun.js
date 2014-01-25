@@ -380,5 +380,5 @@ function makeSun( options ){
 }
 
 function updateGyro() {
-		gyro.lookAt( camera.position );	
+	gyro.lookAt( camera.position );	
 }
