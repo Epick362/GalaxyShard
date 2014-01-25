@@ -35,7 +35,7 @@ function loadStarSurfaceTextures(){
 	}
 }
 
-var surfaceGeo = new THREE.SphereGeometry( 7.35144e-8, 60, 30);
+var surfaceGeo = new THREE.SphereGeometry( 7.35144, 60, 30);
 function makeStarSurface( radius, uniforms ){
 	var sunShaderMaterial = new THREE.ShaderMaterial( {
 		uniforms: 		uniforms,
@@ -47,7 +47,7 @@ function makeStarSurface( radius, uniforms ){
 	return sunSphere;
 }
 
-var haloGeo = new THREE.PlaneGeometry( .00000022, .00000022 );
+var haloGeo = new THREE.PlaneGeometry( .00000022 * 10e7, .00000022 * 10e7 );
 function makeStarHalo(uniforms){
 	var sunHaloMaterial = new THREE.ShaderMaterial(
 		{
@@ -71,7 +71,7 @@ function makeStarHalo(uniforms){
 	return sunHalo;
 }
 
-var glowGeo = new THREE.PlaneGeometry( .0000012, .0000012 );
+var glowGeo = new THREE.PlaneGeometry( .0000012 * 10e7, .0000012 * 10e7 );
 function makeStarGlow(uniforms){
 	//	the bright glow surrounding everything
 	var sunGlowMaterial = new THREE.ShaderMaterial(
@@ -119,7 +119,7 @@ function makeStarLensflare(size, zextra, hueShift){
 
 			flare.scale = size / Math.pow(camDistance,2.0) * 2.0;
 
-	        if( camDistance < 10.0 ){
+	        if( camDistance < 1000.0 ){
 	        	flare.opacity = Math.pow(camDistance * 2.0,2.0);
 	        }
 	        else{
@@ -146,7 +146,7 @@ function makeStarLensflare(size, zextra, hueShift){
 	return sunLensFlare;
 }
 
-var solarflareGeometry = new THREE.TorusGeometry( 0.00000003, 0.000000001 + 0.000000002, 60, 90, 0.15 + Math.PI  );
+var solarflareGeometry = new THREE.TorusGeometry( 0.00000003 * 10e8, 0.000000001 + 0.000000002, 60, 90, 0.15 + Math.PI  );
 function makeSolarflare( uniforms ){
 	var solarflareMaterial = new THREE.ShaderMaterial(
 		{
@@ -179,7 +179,7 @@ function makeSolarflare( uniforms ){
 		solarflareContainer.position.x = -1 + Math.random() * 2;
 		solarflareContainer.position.y = -1 + Math.random() * 2;
 		solarflareContainer.position.z = -1 + Math.random() * 2;
-		solarflareContainer.position.multiplyScalar( 7.35144e-8 * 0.8 );
+		solarflareContainer.position.multiplyScalar( 7.35144 * 0.8 );
 		solarflareContainer.lookAt( new THREE.Vector3(0,0,0) );
 		solarflareContainer.add( solarflare );
 
@@ -229,6 +229,11 @@ function makeSun( options ){
 	//	container
 	var sun = new THREE.Object3D();
 
+
+	// point light!
+	var light = new THREE.PointLight(0xffffff, 1, 200);
+	sun.add(light);
+
 	//	the actual glowy ball of fire
   // console.time("make sun surface");
 	var starSurface = makeStarSurface( radius, sunUniforms );
@@ -238,16 +243,16 @@ function makeSun( options ){
   // console.time("make sun solarflare");
 	var solarflare = makeSolarflare( solarflareUniforms );
 	sun.solarflare = solarflare;
-	sun.add( solarflare );	
+	//sun.add( solarflare );	
   // console.timeEnd("make sun solarflare");
 
 	//	2D overlay elements	
-	var gyro = new THREE.Gyroscope();
+	gyro = new THREE.Gyroscope();
 	sun.add( gyro );	
 		sun.gyro = gyro;
 
     // console.time("make sun lensflare");
-		var starLensflare = makeStarLensflare(1.5, 0.0001, spectral);
+		var starLensflare = makeStarLensflare(10, 0.1, spectral);
 		sun.lensflare = starLensflare;
 		sun.lensflare.name == 'lensflare';
 		gyro.add( starLensflare );
@@ -264,6 +269,7 @@ function makeSun( options ){
 		gyro.add( starGlow );
     // console.timeEnd("make sun glow");
 
+    updateGyro();
 
 	var latticeMaterial = new THREE.MeshBasicMaterial({
 		map: glowSpanTexture,
@@ -271,11 +277,11 @@ function makeSun( options ){
 		transparent: true,
 		depthTest: true,
 		depthWrite: true,		
-		wireframe: true,
+		wireframe: false,
 		opacity: 0.8,
 	});
 
-	var lattice = new THREE.Mesh( new THREE.IcosahedronGeometry( radius * 1.25, 2), latticeMaterial );
+	var lattice = new THREE.Mesh( new THREE.IcosahedronGeometry( radius, 2), latticeMaterial );
 	lattice.update = function(){
 		this.rotation.y += 0.001;
 		this.rotation.z -= 0.0009;
@@ -300,7 +306,7 @@ function makeSun( options ){
 	// sun.rotation.y = 0.2;
 
 	sun.setSpectralIndex = function( index ){
-		var starColor = map( index, -0.3, 1.52, 0, 1);	
+		var starColor = map( index, -0.3, 1.52, 0, 1);
 		starColor = constrain( starColor, 0.0, 1.0 );
 		this.starColor = starColor;
 
@@ -341,18 +347,16 @@ function makeSun( options ){
 		//	which was causing jittering on pixels when the lensflare was too small to be visible
 		//	is this the only way?
 		
-		if( camera.position.z > 5 ){
-			var lensflareChild = this.gyro.getObjectByName('lensflare');
-			if( lensflareChild !== undefined )
-				this.gyro.remove(  lensflareChild );
-		}
-		else{
-			if( this.gyro.getObjectByName('lensflare') === undefined ){
-				this.gyro.add( this.lensflare );			
-			}
-			
-		}
-		
+		//if( camera.position.z > 400 ){
+		//	var lensflareChild = this.gyro.getObjectByName('lensflare');
+		//	if( lensflareChild !== undefined )
+		//		this.gyro.remove(  lensflareChild );
+		//}
+		//else{
+		//	if( this.gyro.getObjectByName('lensflare') === undefined ){
+		//		this.gyro.add( this.lensflare );			
+		//	}
+		//}
 	}		
 
 	//	test controls
@@ -373,4 +377,8 @@ function makeSun( options ){
 
 
 	return sun;
+}
+
+function updateGyro() {
+		gyro.lookAt( camera.position );	
 }

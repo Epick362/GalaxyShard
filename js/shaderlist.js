@@ -34,6 +34,6 @@ function loadShaders( list, callback ){
 		var shaderName = splitted[splitted.length-1];
 		$(document).load( vertexShaderFile, makeCallback(shaderName, 'vertex') );
 		$(document).load( fragmentShaderFile,  makeCallback(shaderName, 'fragment') );
-		console.log('shader '+shaderName+' loaded');
+		//console.log('shader '+shaderName+' loaded');
 	}
 }

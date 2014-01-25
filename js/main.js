@@ -3,7 +3,7 @@ var width  = window.innerWidth,
 	height = window.innerHeight;
 
 // Earth params
-var radius   = 0.5,
+var radius   = KMToLY(12000),
 	segments = 64,
 	rotation = 6,
 	coordinates = [10, 0, 10];  
@@ -21,7 +21,7 @@ function start(e) {
 
 	gradientImage = document.createElement('img');
 	gradientImage.onload = postStarGradientLoaded;
-	gradientImage.src = 'images/star_color_modified.png';	
+	gradientImage.src = 'images/star_color_modified.png';
 }
 
 function postStarGradientLoaded() {
@@ -51,33 +51,42 @@ function initWorld() {
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(width, height);
 
-	scene.add(new THREE.AmbientLight(0x333333));
-
-	star = addStarToScene(.5, 32, [0, 0, 0], null);
-	//scene.add(star)
+	scene.add(new THREE.AmbientLight(0x444444));
 
 	planet = addPlanetToScene(radius, segments, coordinates, true);
 	scene.add(planet)
 
-	stars = createStars(400, 64);
-	scene.add(stars);
-
 	sun = makeSun(
 	 	{
-	 		radius: 2,
+	 		radius: 7.35144,
 	 		spectral: 1
 	 	}
 	 );
 	scene.add(sun);
-	sun.position.set(0, 0, 0);
 
-	axisHelper = new THREE.AxisHelper( 8 );
+	stars = createStars(400, 64);
+	scene.add(stars);
+
+	console.time('solarsystem');
+	//solarsystem = makeSolarSystem();
+	//scene.add(solarsystem);
+	console.timeEnd('solarsystem');
+
+	stats = new Stats();
+	stats.setMode(0); // 0: fps, 1: ms
+	stats.domElement.style.position = 'absolute';
+	stats.domElement.style.top = '0px';	
+	document.body.appendChild( stats.domElement );	
+
+	axisHelper = new THREE.AxisHelper( 100 );
 	scene.add( axisHelper );
 
 	controls = new THREE.TrackballControls(camera);
 	controls.target.set(coordinates[0], coordinates[1], coordinates[2]);
 
 	webglEl.appendChild(renderer.domElement);
+
+	window.addEventListener('resize', onWindowResize, false );
 
 	render();
 }
@@ -86,31 +95,27 @@ function render() {
 	renderer.clear();
 
 	controls.update();
+	updateGyro();
+	sun.rotation.y += 0.00005;
+	sun.rotation.x += 0.0001;
 	planet.rotation.y += 0.0005;	
 	requestAnimationFrame(render);
 	renderer.render(scene, camera);
+
+	stats.update();
 }
 
-function createStar(radius, segments) {
-	return new THREE.Mesh(
-		new THREE.SphereGeometry(radius, segments, segments),
-		new THREE.MeshPhongMaterial({
-			map:         THREE.ImageUtils.loadTexture('images/sunmap.jpg')				
-		})
-	);		
-}
 
-function addStarToScene(radius, segments, position, luminosity) {
-	var star = new THREE.Object3D();
+function onWindowResize() {
 
-	var light = new THREE.PointLight(0xffffff, 1, 200);
-	star.add(light)
+	windowHalfX = window.innerWidth / 2;
+	windowHalfY = window.innerHeight / 2;
 
-	var object = createStar(radius, segments);
-	star.add(object);
-	star.position.set(position[0], position[1], position[2]);
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
 
-	return star;
+	renderer.setSize( window.innerWidth, window.innerHeight );
+
 }
 
 function createPlanet(radius, segments) {
@@ -121,7 +126,7 @@ function createPlanet(radius, segments) {
 			bumpMap:     THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
 			bumpScale:   0.01,
 			specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
-			specular:    new THREE.Color('grey')								
+			specular:    new THREE.Color('grey')					
 		})
 	);
 }
