@@ -22,7 +22,7 @@ function makeSolarSystem(data) {
 		solarsystem.add(planets[i].object);
 	};
 
-	return solarsystem;
+	scene.add(solarsystem);
 }
 
 function updateSolarSystem() {
@@ -62,16 +62,6 @@ function createPlanet(radius, name) {
 	}
 }
 
-function createClouds(radius) {
-	return new THREE.Mesh(
-		new THREE.SphereGeometry(radius + radius * 0.003, segments, segments),			
-		new THREE.MeshPhongMaterial({
-			map:         THREE.ImageUtils.loadTexture('images/fair_clouds_4k.png'),
-			transparent: true
-		})
-	);		
-}
-
 function addPlanetToScene(options) {
 	radius = KMToLY(options.radius) * 6;
 	rotation = options.rotation;
@@ -83,11 +73,21 @@ function addPlanetToScene(options) {
 	object.rotation.y = rotation; 
 	planet.add(object)
 
-	if(options.clouds && options.clouds === true) {
-	    var clouds = createClouds(radius);
-		clouds.rotation.y = rotation;
-		//planet.add(clouds)
+	// Create Orbit Lines
+	var resolution = 100;
+	var amplitude = options.distance;
+	var size = 360 / resolution;
+
+	var geometry = new THREE.Geometry();
+	var material = new THREE.LineBasicMaterial( { color: options.orbitColor, opacity: 1.0} );
+	for(var i = 0; i <= resolution; i++) {
+	    var segment = ( i * size ) * Math.PI / 180;
+	    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         
 	}
+
+	var line = new THREE.Line( geometry, material );
+	scene.add(line);
+	// Create Orbit Lines END
 
 	planet.position.x = options.distance;
 
