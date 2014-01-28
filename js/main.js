@@ -79,6 +79,8 @@ var solarSystemData = {
 		]
 	};
 
+var viewMode = 1; // 0 = Orbital / 1 = System / 2 = Galaxy 
+
 var gradientCanvas;
 var gradientImage;
 var mouse = new THREE.Vector2(), INTERSECTED;
@@ -118,39 +120,32 @@ function initWorld() {
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100000);
-	camera.position.set(65+0.5, 0, 65+0.5);
 
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(width, height);
 
 	scene.add(new THREE.AmbientLight(0x444444));
+	controls = new THREE.TrackballControls(camera);
 
-	makeSolarSystem(solarSystemData);
+	switch(viewMode) {
+		case 0:
+			setupOrbitView();
+		break;
 
-	makeBackground();
+		case 1:
+			setupSystemView();
+		break;
 
-	//ship = new THREE.Mesh( new THREE.CubeGeometry(.01, .01, .01), new THREE.MeshNormalMaterial() );
-	//scene.add( ship );
-	ship = new THREE.Object3D();
-	loadShip(function(object3d){
-		ship.add(object3d)
-	}, 'Shuttle01');
-	ship.position.set(65, 0, 65);
-	scene.add(ship);
+		case 2:
+			setupGalaxyView();
+		break;
+	}
 
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
 	stats.domElement.style.position = 'absolute';
 	stats.domElement.style.bottom = '0px';	
 	document.body.appendChild( stats.domElement );	
-
-	controls = new THREE.TrackballControls(camera);
-	controls.minDistance = 0.05;
-	controls.target.set(65, 0, 65);
-
-	axisHelper = new THREE.AxisHelper( 20 );
-	scene.add( axisHelper );
-	axisHelper.position.set(65, 0, 65);
 
 	webglEl.appendChild(renderer.domElement);
 
@@ -161,7 +156,7 @@ function initWorld() {
 
 function render() {
 	renderer.clear();
-	
+
 	updateSolarSystem();
 	controls.update();
 	requestAnimationFrame(render);
