@@ -2,7 +2,7 @@
 
 var i, r = 5, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
 
-function makeBackground() {
+function makeDebris() {
 	for ( i = 0; i < 650; i ++ ) {
 
 		var vertex = new THREE.Vector3();
@@ -54,4 +54,19 @@ function makeBackground() {
 		scene.add(stars);
 
 	}
+}
+
+function makeBackground(radius, env) {
+	if(!env) {
+		env = 'env01';
+	}
+	starfield = new THREE.Mesh(
+		new THREE.SphereGeometry(radius, 32, 32), 
+		new THREE.MeshBasicMaterial({
+			map:  THREE.ImageUtils.loadTexture('images/enviroment/'+env+'.jpg'), 
+			side: THREE.BackSide
+		})
+	);
+
+	scene.add(starfield);
 }

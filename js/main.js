@@ -83,7 +83,8 @@ var viewMode = 1; // 0 = Orbital / 1 = System / 2 = Galaxy
 
 var gradientCanvas;
 var gradientImage;
-var mouse = new THREE.Vector2(), INTERSECTED;
+
+var cameraMaxDistance = 100000;
 
 var webglEl = document.getElementById('webgl');
 
@@ -119,13 +120,14 @@ function postStarGradientLoaded() {
 function initWorld() {
 	scene = new THREE.Scene();
 
-	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 100000);
+	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, cameraMaxDistance);
 
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(width, height);
 
 	scene.add(new THREE.AmbientLight(0x444444));
 	controls = new THREE.TrackballControls(camera);
+	controls.maxDistance = cameraMaxDistance / 50;
 
 	switch(viewMode) {
 		case 0:
@@ -175,14 +177,4 @@ function onWindowResize() {
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
 
-}
-
-function createStars(radius, segments) {
-	return new THREE.Mesh(
-		new THREE.SphereGeometry(radius, segments, segments), 
-		new THREE.MeshBasicMaterial({
-			map:  THREE.ImageUtils.loadTexture('images/galaxy_starfield.png'), 
-			side: THREE.BackSide
-		})
-	);
 }

@@ -1,7 +1,7 @@
 function setupSystemView() {
 	makeSolarSystem(solarSystemData);
-
-	makeBackground();
+	makeDebris();
+	makeBackground(cameraMaxDistance, 'env02');
 
 	// Camera Settings
 	camera.position.set(65+0.5, 0, 65+0.5);
