@@ -11,12 +11,23 @@ function Player(name, x, y) {
 
 var players = {};
 
+var databaseUrl = "galaxyshard"; // "username:password@example.com/mydb"
+var collections = ["ships"];
+var db = require("mongojs").connect(databaseUrl, collections);
+
 io.sockets.on('connection', function (socket) {
 	//hash of players active
 	
 	socket.on('connect', function(data) {
 		players[data.name] = new Player(data.name, 65, 65);
 		console.log('Connected:' +data.name);
+
+		db.ships.find({name: "Epick"}, function(err, ships) {
+		  if( err || !ships) console.log("No Ships found");
+		  else ships.forEach( function(ship) {
+		    console.log(ship.x);
+		  } );
+		});
 	});
 	
 
