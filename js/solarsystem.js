@@ -25,18 +25,8 @@ function makeSolarSystem(data) {
 	scene.add(solarsystem);
 }
 
-function updateSolarSystem() {
-	updateGyro();
-
-	for (var i = planets.length - 1; i >= 0; i--) {
-		planet = planets[i];
-		planet.object.rotation.y += planet.rotation / 10000;
-
-		var time = new Date();
-		angle = time * planet.revolution * 0.00001;
-
-		planet.object.position.set(planet.distance * Math.cos(angle), 0, planet.distance * Math.sin(angle));
-	};
+function updatePlanet(planet) {
+	planet.object.rotation.y += planet.rotation / 10000;
 }
 
 function createPlanet(radius, name) {
@@ -73,23 +63,25 @@ function addPlanetToScene(options) {
 	object.rotation.y = rotation; 
 	planet.add(object)
 
-	// Create Orbit Lines
-	var resolution = 100;
-	var amplitude = options.distance;
-	var size = 360 / resolution;
+	if(options.orbit != false) {
+		// Create Orbit Lines
+		var resolution = 100;
+		var amplitude = options.distance;
+		var size = 360 / resolution;
 
-	var geometry = new THREE.Geometry();
-	var material = new THREE.LineBasicMaterial( { color: options.orbitColor, opacity: 1.0} );
-	for(var i = 0; i <= resolution; i++) {
-	    var segment = ( i * size ) * Math.PI / 180;
-	    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         
+		var geometry = new THREE.Geometry();
+		var material = new THREE.LineBasicMaterial( { color: options.orbitColor, opacity: 1.0} );
+		for(var i = 0; i <= resolution; i++) {
+		    var segment = ( i * size ) * Math.PI / 180;
+		    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         
+		}
+
+		var line = new THREE.Line( geometry, material );
+		scene.add(line);
+		// Create Orbit Lines END
+
+		planet.position.x = options.distance;
 	}
-
-	var line = new THREE.Line( geometry, material );
-	scene.add(line);
-	// Create Orbit Lines END
-
-	planet.position.x = options.distance;
 
 	return planet;
 }

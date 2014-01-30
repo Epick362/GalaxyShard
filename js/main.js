@@ -131,7 +131,7 @@ function initWorld() {
 
 	switch(viewMode) {
 		case 0:
-			setupOrbitView();
+			setupOrbitalView();
 		break;
 
 		case 1:
@@ -159,7 +159,20 @@ function initWorld() {
 function render() {
 	renderer.clear();
 
-	updateSolarSystem();
+	switch(viewMode) {
+		case 0:
+			updateOrbitalView();
+		break;
+
+		case 1:
+			updateSystemView();
+		break;
+
+		case 2:
+			setupGalaxyView();
+		break;
+	}
+
 	controls.update();
 	requestAnimationFrame(render);
 	renderer.render(scene, camera);
