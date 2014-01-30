@@ -14,10 +14,8 @@ var players = {};
 io.sockets.on('connection', function (socket) {
 	//hash of players active
 	
-
-
 	socket.on('connect', function(data) {
-		players[data.name] = new Player(data.name, 100,100);
+		players[data.name] = new Player(data.name, 65, 65);
 	});
 	
 

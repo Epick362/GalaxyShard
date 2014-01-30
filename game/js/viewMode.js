@@ -29,18 +29,26 @@ function setupSystemView() {
 	controls.minDistance = 0.05;
 	controls.target.set(65, 0, 65);
 
-	// Axis Helper
-	axisHelper = new THREE.AxisHelper( 20 );
-	scene.add( axisHelper );
-	axisHelper.position.set(65, 0, 65);
-
 	// Actual Ship
 	ship = new THREE.Object3D();
 	loadShip(function(object3d){
 		ship.add(object3d)
 	}, 'Shuttle01');
+
 	ship.position.set(65, 0, 65);
 	scene.add(ship);
+
+	/*------------------------------
+	 * Socket fetch players
+	 *------------------------------*/
+
+	socket.on('fetch.players',function(data) {
+		var players = data;
+		for (var i in players) {
+			p = players[i];
+			console.log('Player: '+ p.name);
+		}
+	});
 }
 
 function updateSystemView() {

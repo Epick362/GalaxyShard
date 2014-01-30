@@ -34,5 +34,6 @@
 		<script src="game/js/viewMode.js"></script>    
 
 		<script src="main.js"></script>  
+		<script type="text/javascript" src="server/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"></script>
 	</body>
 </html>
