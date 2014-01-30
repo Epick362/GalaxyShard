@@ -34,10 +34,10 @@ function createPlanet(radius, name) {
 		return new THREE.Mesh(
 			new THREE.SphereGeometry(radius, segments, segments),
 			new THREE.MeshPhongMaterial({
-				map:         THREE.ImageUtils.loadTexture('images/2_no_clouds_4k.jpg'),
-				bumpMap:     THREE.ImageUtils.loadTexture('images/elev_bump_4k.jpg'),
+				map:         THREE.ImageUtils.loadTexture('game/images/2_no_clouds_4k.jpg'),
+				bumpMap:     THREE.ImageUtils.loadTexture('game/images/elev_bump_4k.jpg'),
 				bumpScale:   0.01,
-				specularMap: THREE.ImageUtils.loadTexture('images/water_4k.png'),
+				specularMap: THREE.ImageUtils.loadTexture('game/images/water_4k.png'),
 				specular:    new THREE.Color('grey')					
 			})
 		);
@@ -45,7 +45,7 @@ function createPlanet(radius, name) {
 		return new THREE.Mesh(
 			new THREE.SphereGeometry(radius, segments, segments),
 			new THREE.MeshPhongMaterial({
-				map:         THREE.ImageUtils.loadTexture('images/planets/'+name+'map.jpg'),
+				map:         THREE.ImageUtils.loadTexture('game/images/planets/'+name+'map.jpg'),
 				specular:    new THREE.Color('grey')					
 			})
 		);

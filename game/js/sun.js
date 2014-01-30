@@ -4,34 +4,34 @@ var solarflareTexture;
 var sunHaloTexture;
 var sunHaloColorTexture;
 var sunCoronaTexture;
-var starColorGraph = THREE.ImageUtils.loadTexture( 'images/star_color_modified.png' );
-var glowSpanTexture = THREE.ImageUtils.loadTexture('images/glowspan.png');
+var starColorGraph = THREE.ImageUtils.loadTexture( 'game/images/star_color_modified.png' );
+var glowSpanTexture = THREE.ImageUtils.loadTexture('game/images/glowspan.png');
 
 function loadStarSurfaceTextures(){
 	if( sunTexture === undefined ){
-		sunTexture = THREE.ImageUtils.loadTexture( "images/sun_surface.png");
+		sunTexture = THREE.ImageUtils.loadTexture( "game/images/sun_surface.png");
 		sunTexture.anisotropy = 1;
 		sunTexture.wrapS = sunTexture.wrapT = THREE.RepeatWrapping;
 	}
 
 	if( sunColorLookupTexture === undefined ){
-		sunColorLookupTexture = THREE.ImageUtils.loadTexture( "images/star_colorshift.png" );
+		sunColorLookupTexture = THREE.ImageUtils.loadTexture( "game/images/star_colorshift.png" );
 	}
 
 	if( solarflareTexture === undefined ){
-		solarflareTexture = THREE.ImageUtils.loadTexture( "images/solarflare.png" );
+		solarflareTexture = THREE.ImageUtils.loadTexture( "game/images/solarflare.png" );
 	}
 
 	if( sunHaloTexture === undefined ){
-		sunHaloTexture = THREE.ImageUtils.loadTexture( "images/sun_halo.png");
+		sunHaloTexture = THREE.ImageUtils.loadTexture( "game/images/sun_halo.png");
 	}
 
 	if( sunHaloColorTexture === undefined ){
-		sunHaloColorTexture = THREE.ImageUtils.loadTexture( "images/halo_colorshift.png" );
+		sunHaloColorTexture = THREE.ImageUtils.loadTexture( "game/images/halo_colorshift.png" );
 	}
 
 	if( sunCoronaTexture === undefined ){
-		sunCoronaTexture = THREE.ImageUtils.loadTexture( "images/corona.png");
+		sunCoronaTexture = THREE.ImageUtils.loadTexture( "game/images/corona.png");
 	}
 }
 

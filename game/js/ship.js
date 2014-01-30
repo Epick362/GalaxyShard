@@ -14,7 +14,7 @@ loadShip = function(onLoad, name){
 			// notify the callback
 			onLoad	&& onLoad(object3d)
 		});
-	var objUrl	= 'models/'+name+'/'+name+'.obj';
-	var mtlUrl	= 'models/'+name+'/'+name+'.mtl';
+	var objUrl	= 'game/models/'+name+'/'+name+'.obj';
+	var mtlUrl	= 'game/models/'+name+'/'+name+'.mtl';
 	loader.load(objUrl, mtlUrl);
 };

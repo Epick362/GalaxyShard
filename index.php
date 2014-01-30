@@ -33,6 +33,6 @@
 		<script src="game/js/entity.js"></script>
 		<script src="game/js/viewMode.js"></script>    
 
-		<script src="js/main.js"></script>  
+		<script src="main.js"></script>  
 	</body>
 </html>

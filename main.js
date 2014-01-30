@@ -96,7 +96,7 @@ function start(e) {
 
 	gradientImage = document.createElement('img');
 	gradientImage.onload = postStarGradientLoaded;
-	gradientImage.src = 'images/star_color_modified.png';
+	gradientImage.src = 'game/images/star_color_modified.png';
 }
 
 function postStarGradientLoaded() {

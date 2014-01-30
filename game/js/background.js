@@ -63,7 +63,7 @@ function makeBackground(radius, env) {
 	starfield = new THREE.Mesh(
 		new THREE.SphereGeometry(radius, 32, 32), 
 		new THREE.MeshBasicMaterial({
-			map:  THREE.ImageUtils.loadTexture('images/enviroment/'+env+'.jpg'), 
+			map:  THREE.ImageUtils.loadTexture('game/images/enviroment/'+env+'.jpg'), 
 			side: THREE.BackSide
 		})
 	);

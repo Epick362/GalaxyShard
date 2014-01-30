@@ -32,8 +32,8 @@ function loadShaders( list, callback ){
 		//	find the filename, use it as the identifier	
 		var splitted = list[i].split('/');
 		var shaderName = splitted[splitted.length-1];
-		$(document).load( vertexShaderFile, makeCallback(shaderName, 'vertex') );
-		$(document).load( fragmentShaderFile,  makeCallback(shaderName, 'fragment') );
+		$(document).load( 'game/'+vertexShaderFile, makeCallback(shaderName, 'vertex') );
+		$(document).load( 'game/'+fragmentShaderFile,  makeCallback(shaderName, 'fragment') );
 		//console.log('shader '+shaderName+' loaded');
 	}
 }
