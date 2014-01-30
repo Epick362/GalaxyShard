@@ -38,6 +38,8 @@ function setupSystemView() {
 	ship.position.set(65, 0, 65);
 	scene.add(ship);
 
+	socket.emit('connect', {'name': 'Epick-'+Math.random().toString(36).substring(7)});
+
 	/*------------------------------
 	 * Socket fetch players
 	 *------------------------------*/

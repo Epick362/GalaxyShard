@@ -16,6 +16,7 @@ io.sockets.on('connection', function (socket) {
 	
 	socket.on('connect', function(data) {
 		players[data.name] = new Player(data.name, 65, 65);
+		console.log('Connected:' +data.name);
 	});
 	
 

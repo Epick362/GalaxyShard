@@ -130,7 +130,6 @@ function initWorld() {
 	controls.maxDistance = cameraMaxDistance / 50;
 
 	socket = io.connect('http://localhost:8080');
-	socket.emit('connect', {'name': 'Epick'});
 
 	switch(viewMode) {
 		case 0:
