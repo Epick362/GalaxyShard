@@ -23,10 +23,11 @@ io.sockets.on('connection', function (socket) {
 		console.log('Connected:' +data.name);
 
 		db.ships.find({name: "Epick"}, function(err, ships) {
-		  if( err || !ships) console.log("No Ships found");
-		  else ships.forEach( function(ship) {
-		    console.log(ship.x);
-		  } );
+		  if(ships) {
+		  	return ships[0];
+		  }else{
+		  	return 'error';
+		  }
 		});
 	});
 	

@@ -38,7 +38,8 @@ function setupSystemView() {
 	ship.position.set(65, 0, 65);
 	scene.add(ship);
 
-	socket.emit('connect', {'name': 'Epick'});
+	responsefromserver = socket.emit('connect', {'name': 'Epick'});
+	console.log(responsefromserver);
 
 	/*------------------------------
 	 * Socket fetch players
