@@ -21,10 +21,9 @@ io.sockets.on('connection', function (socket) {
 	//hash of players active
 	
 	socket.on('connect', function(data) {
-		console.log('Connected:' +data.name);
-
 		db.ships.find({name: data.name}, function(err, ships) {
 			if(!err && ships) {
+				console.log('Connected:' +data.name);
 				players[data.name] = new Player(data.name, ships[0].x, ships[0].y, ships[0].z, ships[0].ship);
 				socket.emit('connected', ships[0]);
 			}else{
@@ -45,7 +44,7 @@ io.sockets.on('connection', function (socket) {
   	 * Fetch players
   	 *------------------------------*/
   	socket.on('fetch.players', function(data) {
-		socket.emit('fetch.players', players);
+		io.sockets.emit('players', players);
   	});
 
 });

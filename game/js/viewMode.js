@@ -42,27 +42,8 @@ function setupSystemView() {
 		camera.position.set(data.x+0.5, data.y+0, data.z+0.5);
 		controls.minDistance = 0.05;
 		controls.target.set(data.x, data.y, data.z);
-	});
 
-	/*------------------------------
-	 * Socket fetch players
-	 *------------------------------*/
-
-	socket.emit('fetch.players');
-
-	socket.on('fetch.players', function(data) {
-		var players = data;
-		for (var i in players) {
-			p = players[i];
-			console.log(p);
-			var pship = new THREE.Object3D();
-			loadShip(function(object3d){
-				pship.add(object3d)
-			}, p.ship);
-
-			pship.position.set(p.x, p.y, p.z);
-			scene.add(pship);
-		}
+		socket.emit('fetch.players');
 	});
 }
 

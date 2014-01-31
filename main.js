@@ -161,6 +161,25 @@ function initWorld() {
 function render() {
 	renderer.clear();
 
+	/*------------------------------
+	 * Socket fetch players
+	 *------------------------------*/
+
+	socket.on('players', function(data) {
+		var players = data;
+		for (var i in players) {
+			p = players[i];
+			var pship = new THREE.Object3D();
+			loadShip(function(object3d){
+				pship.add(object3d)
+			}, p.ship);
+
+			console.log(p.x+' '+p.y+' '+p.z);
+			pship.position.set(p.x, p.y, p.z);
+			scene.add(pship);
+		}
+	});
+
 	switch(viewMode) {
 		case 0:
 			updateOrbitalView();
