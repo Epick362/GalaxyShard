@@ -136,6 +136,7 @@ function initWorld() {
     function () {
         scene.simulate();
     });
+	scene.setGravity(new THREE.Vector3( 0, 0, 0 ));
 
 	// Camera Settings
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, cameraMaxDistance);
@@ -161,7 +162,22 @@ function initWorld() {
 		break;
 	}
 
-	controls = new THREE.PlayerControls(starfield, scene, ship, camera, renderer.domElement);
+    var bounding = new Physijs.SphereMesh(
+    new THREE.SphereGeometry(0.75, 4, 4),
+    Physijs.createMaterial(
+    new THREE.MeshBasicMaterial({
+        color: '#ff0000'
+    }),
+    1.0, // high friction
+    0.0 // low restitution
+    ),
+    0.1);
+
+    bounding.add(ship);
+    scene.add(bounding);
+    bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
+
+	controls = new THREE.PlayerControls(bounding, scene, ship, camera, renderer.domElement);
 	controls.minDistance = 0.5;
 
 	stats = new Stats();

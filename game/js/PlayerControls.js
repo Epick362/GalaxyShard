@@ -408,7 +408,6 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	}
 
 	function onKeyDown(event) {
-		console.log('onKeyDown')
 		if (scope.enabled === false) return;
 		switch (event.keyCode) {
 			case scope.keys.UP:

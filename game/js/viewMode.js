@@ -37,7 +37,7 @@ function setupSystemView() {
 		}, data.ship);
 
 		ship.position.set(data.x, data.y, data.z);
-		scene.add(ship);
+		//scene.add(ship);
 
 		socket.emit('fetch.players');
 	});
