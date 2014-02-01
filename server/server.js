@@ -13,22 +13,18 @@ function Player(name, x, y, z, ship) {
 
 var players = {};
 
-var databaseUrl = "galaxyshard"; // "username:password@example.com/mydb"
-var collections = ["ships"];
-var db = require("mongojs").connect(databaseUrl, collections);
+// Establish DB connection
+var db = require('monk')('localhost/galaxyshard')
+  , users = db.get('ships')
 
 io.sockets.on('connection', function (socket) {
 	//hash of players active
 	
 	socket.on('connect', function(data) {
-		db.ships.find({name: data.name}, function(err, ships) {
-			if(!err && ships) {
-				console.log('Connected:' +data.name);
-				players[data.name] = new Player(data.name, ships[0].x, ships[0].y, ships[0].z, ships[0].ship);
-				socket.emit('connected', ships[0]);
-			}else{
-				console.log('error');
-			}
+		users.findOne({name: data.name}).on('success', function (ship) {
+			console.log('Connected:' +data.name);
+			players[data.name] = new Player(data.name, ship.x, ship.y, ship.z, ship.ship);
+			socket.emit('connected', ship);			
 		});
 	});
 	
