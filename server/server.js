@@ -44,7 +44,7 @@ io.sockets.on('connection', function (socket) {
   	 * Fetch players
   	 *------------------------------*/
   	socket.on('fetch.players', function(data) {
-		io.sockets.emit('players', players);
+		io.sockets.emit('fetch.players', players);
   	});
 
 });

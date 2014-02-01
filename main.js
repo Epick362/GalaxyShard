@@ -165,7 +165,7 @@ function render() {
 	 * Socket fetch players
 	 *------------------------------*/
 
-	socket.on('players', function(data) {
+	socket.on('fetch.players', function(data) {
 		var players = data;
 		for (var i in players) {
 			p = players[i];
@@ -174,9 +174,9 @@ function render() {
 				pship.add(object3d)
 			}, p.ship);
 
-			console.log(p.x+' '+p.y+' '+p.z);
-			pship.position.set(p.x, p.y, p.z);
+			console.log('Player:'+p.name+' '+p.x+' '+p.y+' '+p.z);
 			scene.add(pship);
+			pship.position.set(p.x, p.y, p.z);
 		}
 	});
 
