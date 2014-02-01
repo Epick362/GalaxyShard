@@ -29,6 +29,17 @@ function setupSystemView() {
 
 	// Actual Ship
 	ship = new THREE.Object3D();
+	ship.position.set(0, 3, 0);
+    bounding = new Physijs.SphereMesh(
+    new THREE.SphereGeometry(.01, .01, .001),
+    Physijs.createMaterial(
+    new THREE.MeshBasicMaterial({
+        color: '#ff0000'
+    }),
+    1.0, // high friction
+    0.0 // low restitution
+    ),
+    0.1);
 
 	socket.emit('connect', {'name': player.name});
 	socket.on('connected', function(data) {
@@ -36,8 +47,12 @@ function setupSystemView() {
 			ship.add(object3d)
 		}, data.ship);
 
-		ship.position.set(data.x, data.y, data.z);
+		bounding.position.set(data.x, data.y, data.z);
+		//controls.center = new THREE.Vector3(data.x, data.y, data.z);
 		//scene.add(ship);
+	    bounding.add(ship);
+	    scene.add(bounding);
+	    bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
 
 		socket.emit('fetch.players');
 	});

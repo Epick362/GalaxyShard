@@ -12,7 +12,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	this.anchor = anchor;
 	this.player = player;
 	this.camera = camera;
-	this.camera.position.set(65.5, .25, 65.5);
+	this.camera.position.set(.5, .25, .5);
 	this.domElement = (domElement !== undefined) ? domElement : document;
 
 	this.camera_anchor_gyro = new THREE.Gyroscope();
@@ -26,7 +26,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	// API
 	this.enabled = true;
 
-	this.center = new THREE.Vector3(65, 0, 65);
+	this.center = new THREE.Vector3(0, 0, 0);
 
 	this.userZoom = true;
 	this.userZoomSpeed = 2.0;
