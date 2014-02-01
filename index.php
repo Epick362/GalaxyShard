@@ -16,6 +16,7 @@
 		<div id="webgl"></div>
 		<script src="game/js/jquery-2.0.3.min.js"></script>
 		<script src="game/js/three.min.js"></script>
+		<script src="game/js/physi.js"></script>
 		<script src="game/js/OBJLoader.js"></script>
 		<script src="game/js/MTLLoader.js"></script>
 		<script src="game/js/OBJMTLLoader.js"></script>
@@ -23,7 +24,7 @@
 		<script src="game/js/util.js"></script>
 		<script src="game/js/spacehelpers.js"></script>		
 		<script src="game/js/Detector.js"></script>		
-		<script src="game/js/TrackballControls.js"></script>
+		<script src="game/js/PlayerControls.js"></script>
 		<script src="game/js/shaderlist.js"></script>  
 		<script src="game/js/lensflare.js"></script>	
 		<script src="game/js/background.js"></script> 		  		
@@ -31,7 +32,7 @@
 		<script src="game/js/solarsystem.js"></script>
 		<script src="game/js/ship.js"></script>
 		<script src="game/js/entity.js"></script>
-		<script src="game/js/viewMode.js"></script>    
+		<script src="game/js/viewMode.js"></script>
 
 		<script src="main.js"></script>  
 		<script type="text/javascript" src="server/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"></script>

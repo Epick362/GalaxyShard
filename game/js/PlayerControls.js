@@ -1,0 +1,490 @@
+THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
+
+	this.walking = false;
+	this.occ = false;
+	this.scene = scene;
+	this.occLastZoom = 0;
+	this.jumpRelease = true;
+	this.jumping = false;
+	this.falling = false;
+	this.moving = false;
+	this.turning = false;
+	this.anchor = anchor;
+	this.player = player;
+	this.camera = camera;
+	this.camera.position.set(65.5, .25, 65.5);
+	this.domElement = (domElement !== undefined) ? domElement : document;
+
+	this.camera_anchor_gyro = new THREE.Gyroscope();
+	this.camera_anchor_gyro.add(this.camera);
+	this.anchor.add(this.camera_anchor_gyro);
+	
+	this.anchor.rotation.order = "YXZ";
+	this.camera_anchor_gyro.rotation.order = "YXZ";
+	this.camera.rotation.order = "YXZ";
+
+	// API
+	this.enabled = true;
+
+	this.center = new THREE.Vector3(65, 0, 65);
+
+	this.userZoom = true;
+	this.userZoomSpeed = 2.0;
+
+	this.userRotate = true;
+	this.userRotateSpeed = 1.0;
+
+	this.minPolarAngle = 0; // radians
+	this.maxPolarAngle = Math.PI; // radians
+
+	this.minDistance = 2;
+	this.maxDistance = 30;
+
+	this.keys = {
+		LEFT: 65,
+		STRAFFLEFT: 81,
+		UP: 87,
+		RIGHT: 68,
+		STRAFFRIGHT: 69,
+		DOWN: 83,
+		JUMP: 32,
+		SLASH: 191
+	};
+
+	// internals
+	var scope = this;
+
+	var EPS = 0.000001;
+	var PIXELS_PER_ROUND = 1800;
+
+	var rotateStart = new THREE.Vector2();
+	var rotateEnd = new THREE.Vector2();
+	var rotateDelta = new THREE.Vector2();
+
+	var zoomStart = new THREE.Vector2();
+	var zoomEnd = new THREE.Vector2();
+	var zoomDelta = new THREE.Vector2();
+
+	var phiDelta = 0;
+	var thetaDelta = 0;
+	var scale = 1;
+
+	var lastPosition = new THREE.Vector3();
+
+	var STATE = {
+		NONE: -1,
+		ROTATE: 0,
+		ZOOM: 1
+	};
+	var state = STATE.NONE;
+	var key_state = [];
+
+	// events
+	var changeEvent = {
+		type: 'change'
+	};
+
+
+	this.rotateLeft = function (angle) {
+		thetaDelta -= angle;
+	};
+
+	this.rotateRight = function (angle) {
+		thetaDelta += angle;
+	};
+
+	this.rotateUp = function (angle) {
+		phiDelta -= angle;
+	};
+
+	this.rotateDown = function (angle) {
+		phiDelta += angle;
+	};
+
+	this.zoomIn = function (zoomScale) {
+		if (zoomScale === undefined) {
+			zoomScale = getZoomScale();
+		}
+		scale /= zoomScale;
+	};
+
+	this.zoomOut = function (zoomScale) {
+		if (zoomScale === undefined) {
+			zoomScale = getZoomScale();
+		}
+		scale *= zoomScale;
+	};
+
+	this.update = function (delta) {
+		// detect falling
+		if (this.scene.children.length > 0) {
+			var originPoint = this.anchor.position.clone();
+			var ray = new THREE.Raycaster(originPoint, new THREE.Vector3(0, -1, 0));
+			var collisionResults = ray.intersectObjects(this.scene.children.filter(function (child) {
+				return child.occ;
+			}));
+			if (collisionResults.length > 0) {
+				if (collisionResults[0].distance < 1.25 && this.falling) {
+					this.falling = false;
+					this.jumping = false;
+				} else if (collisionResults[0].distance > 2 + (this.jumping ? 1 : 0) && !this.falling) {
+					this.falling = true;
+				}
+			}
+		}
+
+		// handle movement
+		if (!this.falling) {
+			if (key_state.indexOf(this.keys.JUMP) > -1 && this.jumpRelease && !this.jumping) {
+				// jump
+				var lv = this.anchor.getLinearVelocity();
+				this.anchor.setLinearVelocity(new THREE.Vector3(lv.x, 15, lv.z));
+				this.jumpRelease = false;
+				this.jumping = true;
+				//jump
+			} else if (!this.jumping) {
+				// move
+				if (key_state.indexOf(this.keys.UP) > -1) {
+					
+					var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
+
+					var speed = this.walking ? 2.5 : 10;
+					var force_vector;
+
+					// straffing?
+					if (key_state.indexOf(this.keys.STRAFFLEFT) > -1 && key_state.indexOf(this.keys.STRAFFRIGHT) < 0) {
+						force_vector = new THREE.Vector3((2 * speed / 3), 0, (2 * speed / 3)).applyMatrix4(rotation_matrix);
+						this.player.rotation.set(0, Math.PI / 4, 0);
+					} else if (key_state.indexOf(this.keys.STRAFFRIGHT) > -1) {
+						force_vector = new THREE.Vector3((-2 * speed / 3), 0, (2 * speed / 3)).applyMatrix4(rotation_matrix);
+						this.player.rotation.set(0, -Math.PI / 4, 0);
+					} else {
+						force_vector = new THREE.Vector3(0, 0, speed).applyMatrix4(rotation_matrix);
+						this.player.rotation.set(0, 0, 0);
+					}
+
+					this.anchor.setLinearVelocity(force_vector);
+					this.moving = true;
+
+					// forward
+				} else if (key_state.indexOf(this.keys.DOWN) > -1) {
+					var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
+
+					var speed = this.walking ? -2.5 : -5;
+					var force_vector;
+
+					// straffing?
+					if (key_state.indexOf(this.keys.STRAFFLEFT) > -1 && key_state.indexOf(this.keys.STRAFFRIGHT) < 0) {
+						force_vector = new THREE.Vector3((-2 * speed / 3), 0, (2 * speed / 3)).applyMatrix4(rotation_matrix);
+						this.player.rotation.set(0, -Math.PI / 4, 0);
+					} else if (key_state.indexOf(this.keys.STRAFFRIGHT) > -1) {
+						force_vector = new THREE.Vector3((2 * speed / 3), 0, (2 * speed / 3)).applyMatrix4(rotation_matrix);
+						this.player.rotation.set(0, Math.PI / 4, 0);
+					} else {
+						force_vector = new THREE.Vector3(0, 0, speed).applyMatrix4(rotation_matrix);
+						this.player.rotation.set(0, 0, 0);
+					}
+
+					this.anchor.setLinearVelocity(force_vector);
+					this.moving = true;
+
+					//back
+				} else if (key_state.indexOf(this.keys.STRAFFLEFT) > -1) {
+					var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
+
+					var speed = this.walking ? 2.5 : 10;
+					var force_vector = new THREE.Vector3(speed, 0, 0).applyMatrix4(rotation_matrix);
+					this.player.rotation.set(0, Math.PI / 2, 0);
+
+					this.anchor.setLinearVelocity(force_vector);
+					this.moving = true;
+
+					//straff
+				} else if (key_state.indexOf(this.keys.STRAFFRIGHT) > -1) {
+					var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
+
+					var speed = this.walking ? 2.5 : 10;
+					var force_vector = new THREE.Vector3(-speed, 0, 0).applyMatrix4(rotation_matrix);
+					this.player.rotation.set(0, -Math.PI / 2, 0);
+
+					this.anchor.setLinearVelocity(force_vector);
+					this.moving = true;
+
+					//straff
+				} else if (this.moving) {
+					this.player.rotation.set(0, 0, 0);
+					this.anchor.setLinearVelocity(new THREE.Vector3(0, 0, 0));
+					this.moving = false;
+				}
+
+				//turn
+				if (key_state.indexOf(this.keys.LEFT) > -1 && key_state.indexOf(this.keys.RIGHT) < 0) {
+					this.anchor.setAngularVelocity(new THREE.Vector3(0, 1.5, 0));
+					this.turning = true;
+					//turning
+				} else if (key_state.indexOf(this.keys.RIGHT) > -1) {
+					this.anchor.setAngularVelocity(new THREE.Vector3(0, -1.5, 0));
+					this.turning = true;
+					//turning
+				} else if (this.turning) {
+					this.anchor.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+					this.turning = false;
+				}
+
+				//idle
+			}
+
+			if (key_state.indexOf(this.keys.JUMP) == -1) {
+				this.jumpRelease = true;
+			}
+		} else {
+			//falling
+		}
+
+		var position = this.camera.position;
+		var offset = position.clone().sub(this.center);
+
+		// angle from z-axis around y-axis
+		var theta = Math.atan2(offset.x, offset.z);
+
+		// angle from y-axis
+		var phi = Math.atan2(Math.sqrt(offset.x * offset.x + offset.z * offset.z), offset.y);
+
+		theta += thetaDelta;
+		phi += phiDelta;
+
+		if ((this.moving || this.turning) && state != STATE.ROTATE) {
+			var curr_rot = new THREE.Euler(0, 0, 0, "YXZ").setFromRotationMatrix(this.camera.matrixWorld).y;
+			var dest_rot = new THREE.Euler(0, 0, 0, "YXZ").setFromRotationMatrix(this.anchor.matrixWorld).y;
+			var dest_rot = dest_rot + (dest_rot > 0 ? -Math.PI : Math.PI);
+			var step = shortestArc(curr_rot,dest_rot)*delta*2;
+			this.camera_anchor_gyro.rotation.y += step;//Math.max(-delta, diff);
+			
+			// fix pitch (should be an option or it could get anoying)
+			//phi = 9*Math.PI/24;
+		}
+
+		// restrict phi to be between desired limits
+		phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
+
+		// restrict phi to be betwee EPS and PI-EPS
+		phi = Math.max(EPS, Math.min(Math.PI - EPS, phi));
+
+		var radius;
+		if (this.occ) {
+			this.occLastZoom = Math.max(this.minDistance, Math.min(this.maxDistance, this.occLastZoom * scale));
+			radius = this.occLastZoom;
+		} else {
+			radius = offset.length() * scale;
+		}
+
+		// restrict radius to be between desired limits
+		radius = Math.max(this.minDistance, Math.min(this.maxDistance, radius));
+
+		// check for objects infront of camera
+		var projector = new THREE.Projector();
+		var vector = new THREE.Vector3(0, 0, 1);
+		projector.unprojectVector(vector, camera);
+		var point = new THREE.Vector3(this.anchor.position.x + this.center.x, this.anchor.position.y + this.center.y, this.anchor.position.z + this.center.z);
+		var vec = camera.position.clone().sub(vector).normalize()
+
+		var checkray = new THREE.Raycaster(point, vec, this.minDistance, this.maxDistance);
+		var checkcollisionResults = checkray.intersectObjects(this.scene.children.filter(function (child) {
+			return child.occ;
+		}));
+		if (checkcollisionResults.length > 0) {
+			var min = radius;
+			for (var i = 0; i < checkcollisionResults.length; i++) {
+				if (min > checkcollisionResults[i].distance) min = checkcollisionResults[i].distance;
+			}
+			if (min < radius) {
+				if (!this.occ) {
+					this.occ = true;
+					this.occLastZoom = radius;
+				}
+				radius = min;
+			} else {
+				this.occ = false;
+			}
+		}
+
+		offset.x = radius * Math.sin(phi) * Math.sin(theta);
+		offset.y = radius * Math.cos(phi);
+		offset.z = radius * Math.sin(phi) * Math.cos(theta);
+
+		position.copy(this.center).add(offset);
+		this.camera.lookAt(this.center);
+
+		thetaDelta = 0;
+		phiDelta = 0;
+		scale = 1;
+
+		if (lastPosition.distanceTo(this.camera.position) > 0) {
+			this.dispatchEvent(changeEvent);
+			lastPosition.copy(this.camera.position);
+		}
+	};
+
+	function shortestArc(a, b)
+	{
+		if (Math.abs(b - a) < Math.PI)
+			return b - a;
+		if (b > a)
+			return b - a - Math.PI * 2.0;
+		return b - a + Math.PI * 2.0;
+	}
+
+	function getZoomScale() {
+		return Math.pow(0.95, scope.userZoomSpeed);
+	}
+
+	function onMouseDown(event) {
+		if (scope.enabled === false) return;
+		if (scope.userRotate === false) return;
+
+		event.preventDefault();
+
+		if (state === STATE.NONE) {
+			if (event.button === 0) state = STATE.ROTATE;
+		}
+
+		if (state === STATE.ROTATE) {
+			rotateStart.set(event.clientX, event.clientY);
+		}
+
+		document.addEventListener('mousemove', onMouseMove, false);
+		document.addEventListener('mouseup', onMouseUp, false);
+	}
+
+	function onMouseMove(event) {
+		if (scope.enabled === false) return;
+		event.preventDefault();
+
+		if (state === STATE.ROTATE) {
+			rotateEnd.set(event.clientX, event.clientY);
+			rotateDelta.subVectors(rotateEnd, rotateStart);
+			scope.rotateLeft(2 * Math.PI * rotateDelta.x / PIXELS_PER_ROUND * scope.userRotateSpeed);
+			scope.rotateUp(2 * Math.PI * rotateDelta.y / PIXELS_PER_ROUND * scope.userRotateSpeed);
+			rotateStart.copy(rotateEnd);
+		} else if (state === STATE.ZOOM) {
+			zoomEnd.set(event.clientX, event.clientY);
+			zoomDelta.subVectors(zoomEnd, zoomStart);
+			if (zoomDelta.y > 0) {
+				scope.zoomIn();
+			} else {
+				scope.zoomOut();
+			}
+			zoomStart.copy(zoomEnd);
+		}
+	}
+
+	function onMouseUp(event) {
+		if (scope.enabled === false) return;
+		if (scope.userRotate === false) return;
+
+		document.removeEventListener('mousemove', onMouseMove, false);
+		document.removeEventListener('mouseup', onMouseUp, false);
+
+		state = STATE.NONE;
+	}
+
+	function onMouseWheel(event) {
+		if (scope.enabled === false) return;
+		if (scope.userZoom === false) return;
+
+		var delta = 0;
+
+		if (event.wheelDelta) { // WebKit / Opera / Explorer 9
+			delta = event.wheelDelta;
+		} else if (event.detail) { // Firefox
+			delta = -event.detail;
+		}
+
+		if (delta > 0) {
+			scope.zoomOut();
+		} else {
+			scope.zoomIn();
+		}
+	}
+
+	function onKeyDown(event) {
+		console.log('onKeyDown')
+		if (scope.enabled === false) return;
+		switch (event.keyCode) {
+			case scope.keys.UP:
+				var index = key_state.indexOf(scope.keys.UP);
+				if (index == -1) key_state.push(scope.keys.UP);
+				break;
+			case scope.keys.DOWN:
+				var index = key_state.indexOf(scope.keys.DOWN);
+				if (index == -1) key_state.push(scope.keys.DOWN);
+				break;
+			case scope.keys.LEFT:
+				var index = key_state.indexOf(scope.keys.LEFT);
+				if (index == -1) key_state.push(scope.keys.LEFT);
+				break;
+			case scope.keys.STRAFFLEFT:
+				var index = key_state.indexOf(scope.keys.STRAFFLEFT);
+				if (index == -1) key_state.push(scope.keys.STRAFFLEFT);
+				break;
+			case scope.keys.RIGHT:
+				var index = key_state.indexOf(scope.keys.RIGHT);
+				if (index == -1) key_state.push(scope.keys.RIGHT);
+				break;
+			case scope.keys.STRAFFRIGHT:
+				var index = key_state.indexOf(scope.keys.STRAFFRIGHT);
+				if (index == -1) key_state.push(scope.keys.STRAFFRIGHT);
+				break;
+			case scope.keys.JUMP:
+				var index = key_state.indexOf(scope.keys.JUMP);
+				if (index == -1) key_state.push(scope.keys.JUMP);
+				break;
+		}
+	}
+
+	function onKeyUp(event) {
+		switch (event.keyCode) {
+			case scope.keys.UP:
+				var index = key_state.indexOf(scope.keys.UP);
+				if (index > -1) key_state.splice(index, 1);
+				break;
+			case scope.keys.DOWN:
+				var index = key_state.indexOf(scope.keys.DOWN);
+				if (index > -1) key_state.splice(index, 1);
+				break;
+			case scope.keys.LEFT:
+				var index = key_state.indexOf(scope.keys.LEFT);
+				if (index > -1) key_state.splice(index, 1);
+				break;
+			case scope.keys.STRAFFLEFT:
+				var index = key_state.indexOf(scope.keys.STRAFFLEFT);
+				if (index > -1) key_state.splice(index, 1);
+				break;
+			case scope.keys.RIGHT:
+				var index = key_state.indexOf(scope.keys.RIGHT);
+				if (index > -1) key_state.splice(index, 1);
+				break;
+			case scope.keys.STRAFFRIGHT:
+				var index = key_state.indexOf(scope.keys.STRAFFRIGHT);
+				if (index > -1) key_state.splice(index, 1);
+				break;
+			case scope.keys.JUMP:
+				var index = key_state.indexOf(scope.keys.JUMP);
+				if (index > -1) key_state.splice(index, 1);
+				break;
+			case scope.keys.SLASH:
+				scope.walking = !scope.walking;
+				break;
+
+		}
+	}
+
+	this.domElement.addEventListener('contextmenu', function (event) {
+		event.preventDefault();
+	}, false);
+	this.domElement.addEventListener('mousedown', onMouseDown, false);
+	this.domElement.addEventListener('mousewheel', onMouseWheel, false);
+	this.domElement.addEventListener('DOMMouseScroll', onMouseWheel, false); // firefox
+	window.addEventListener('keydown', onKeyDown, false);
+	window.addEventListener('keyup', onKeyUp, false);
+};

@@ -86,8 +86,16 @@ var gradientImage;
 
 var ships = {};
 var players = {};
+var clock = new THREE.Clock();
 
 var cameraMaxDistance = 100000;
+
+Physijs.scripts.worker = 'game/js/physijs_worker.js';
+Physijs.scripts.ammo = 'ammo.js';
+
+THREE.PlayerControls.prototype = Object.create(THREE.EventDispatcher.prototype);
+
+//var keyboard = new KeyboardState();
 
 var webglEl = document.getElementById('webgl');
 
@@ -121,16 +129,21 @@ function postStarGradientLoaded() {
 }
 
 function initWorld() {
-	scene = new THREE.Scene();
+	scene = new Physijs.Scene();
+    scene.addEventListener(
+        'update',
 
+    function () {
+        scene.simulate();
+    });
+
+	// Camera Settings
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, cameraMaxDistance);
 
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize(width, height);
 
 	scene.add(new THREE.AmbientLight(0x444444));
-	controls = new THREE.TrackballControls(camera);
-	controls.maxDistance = cameraMaxDistance / 50;
 
 	socket = io.connect('http://localhost:8080');
 
@@ -148,6 +161,9 @@ function initWorld() {
 		break;
 	}
 
+	controls = new THREE.PlayerControls(starfield, scene, ship, camera, renderer.domElement);
+	controls.minDistance = 0.5;
+
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
 	stats.domElement.style.position = 'absolute';
@@ -158,7 +174,21 @@ function initWorld() {
 
 	window.addEventListener('resize', onWindowResize, false );
 
-	render();
+    scene.simulate();
+	animate();
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    update();
+    render();
+}
+
+function update() {
+    // delta = change in time since last call (in seconds)
+    var delta = clock.getDelta();
+    THREE.AnimationHandler.update(delta);
+    if (controls) controls.update(delta);
 }
 
 function render() {
@@ -178,8 +208,6 @@ function render() {
 		break;
 	}
 
-	controls.update();
-	requestAnimationFrame(render);
 	renderer.render(scene, camera);
 
 	stats.update();

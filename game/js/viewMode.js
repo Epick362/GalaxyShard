@@ -27,21 +27,17 @@ function setupSystemView() {
 	player = {};
 	player.name = prompt('enter name');
 
+	// Actual Ship
+	ship = new THREE.Object3D();
+
 	socket.emit('connect', {'name': player.name});
 	socket.on('connected', function(data) {
-		// Actual Ship
-		ship = new THREE.Object3D();
 		loadShip(function(object3d){
 			ship.add(object3d)
 		}, data.ship);
 
 		ship.position.set(data.x, data.y, data.z);
 		scene.add(ship);
-
-		// Camera Settings
-		camera.position.set(data.x+0.5, data.y+0, data.z+0.5);
-		controls.minDistance = 0.05;
-		controls.target.set(data.x, data.y, data.z);
 
 		socket.emit('fetch.players');
 	});
@@ -53,7 +49,7 @@ function updateSystemView() {
 	/*------------------------------
 	 * Socket fetch players
 	 *------------------------------*/
-
+/*
 	socket.on('fetch.players', function(data) {
 		var players = data;
 		console.log(players);
@@ -69,7 +65,7 @@ function updateSystemView() {
 			ships[i].position.set(p.x, p.y, p.z);
 		}
 	});
-
+*/
 	for (var i = planets.length - 1; i >= 0; i--) {
 		planet = planets[i];
 		updatePlanet(planet);
