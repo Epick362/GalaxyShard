@@ -50,6 +50,26 @@ function setupSystemView() {
 function updateSystemView() {
 	updateGyro();
 
+	/*------------------------------
+	 * Socket fetch players
+	 *------------------------------*/
+
+	socket.on('fetch.players', function(data) {
+		var players = data;
+		console.log(players);
+		for (var i in players) {
+			p = players[i];
+			ships[i] = new THREE.Object3D();
+			loadShip(function(object3d){
+				ships[i].add(object3d)
+			}, p.ship);
+
+			console.log('Player:'+p.name+' '+p.x+' '+p.y+' '+p.z);
+			scene.add(ships[i]);
+			ships[i].position.set(p.x, p.y, p.z);
+		}
+	});
+
 	for (var i = planets.length - 1; i >= 0; i--) {
 		planet = planets[i];
 		updatePlanet(planet);

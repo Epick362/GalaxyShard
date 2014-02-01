@@ -84,6 +84,9 @@ var viewMode = 1; // 0 = Orbital / 1 = System / 2 = Galaxy
 var gradientCanvas;
 var gradientImage;
 
+var ships = {};
+var players = {};
+
 var cameraMaxDistance = 100000;
 
 var webglEl = document.getElementById('webgl');
@@ -160,25 +163,6 @@ function initWorld() {
 
 function render() {
 	renderer.clear();
-
-	/*------------------------------
-	 * Socket fetch players
-	 *------------------------------*/
-
-	socket.on('fetch.players', function(data) {
-		var players = data;
-		for (var i in players) {
-			p = players[i];
-			var pship = new THREE.Object3D();
-			loadShip(function(object3d){
-				pship.add(object3d)
-			}, p.ship);
-
-			console.log('Player:'+p.name+' '+p.x+' '+p.y+' '+p.z);
-			scene.add(pship);
-			pship.position.set(p.x, p.y, p.z);
-		}
-	});
 
 	switch(viewMode) {
 		case 0:
