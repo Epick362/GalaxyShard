@@ -4,8 +4,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Space MMO</title>
-	    <link rel="stylesheet" type="text/css" href="game/css/bootstrap.min.css" />
-	    <link rel="stylesheet" type="text/css" href="game/css/bootstrap-theme.min.css" />
+	    <link rel="stylesheet" type="text/css" href="game/css/gumby.css" />
 		<style>
 			body { margin: 0; overflow: hidden; background-color: #000; }
 			.webgl-error { font: 15px/30px monospace; text-align: center; color: #fff; margin: 50px; }
@@ -13,8 +12,13 @@
 	    </style>
 	</head>
 	<body onload="start()" oncontextmenu="return false">
+<div class="xlarge btn default"><a href="#">Extra Large</a></div>
+<div class="large btn default"><a href="#">Large</a></div>
+<div class="medium btn default"><a href="#">Medium</a></div>
+<div class="small btn default"><a href="#">Small</a></div>
 		<div id="webgl"></div>
 		<script src="game/js/jquery-2.0.3.min.js"></script>
+		<script src="game/js/gumby.min.js"></script>
 		<script src="game/js/three.min.js"></script>
 		<script src="game/js/physi.js"></script>
 		<script src="game/js/OBJLoader.js"></script>
