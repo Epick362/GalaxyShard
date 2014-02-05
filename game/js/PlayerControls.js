@@ -422,17 +422,9 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 				var index = key_state.indexOf(scope.keys.LEFT);
 				if (index == -1) key_state.push(scope.keys.LEFT);
 				break;
-			case scope.keys.STRAFFLEFT:
-				var index = key_state.indexOf(scope.keys.STRAFFLEFT);
-				if (index == -1) key_state.push(scope.keys.STRAFFLEFT);
-				break;
 			case scope.keys.RIGHT:
 				var index = key_state.indexOf(scope.keys.RIGHT);
 				if (index == -1) key_state.push(scope.keys.RIGHT);
-				break;
-			case scope.keys.STRAFFRIGHT:
-				var index = key_state.indexOf(scope.keys.STRAFFRIGHT);
-				if (index == -1) key_state.push(scope.keys.STRAFFRIGHT);
 				break;
 			case scope.keys.JUMP:
 				var index = key_state.indexOf(scope.keys.JUMP);
@@ -455,16 +447,8 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 				var index = key_state.indexOf(scope.keys.LEFT);
 				if (index > -1) key_state.splice(index, 1);
 				break;
-			case scope.keys.STRAFFLEFT:
-				var index = key_state.indexOf(scope.keys.STRAFFLEFT);
-				if (index > -1) key_state.splice(index, 1);
-				break;
 			case scope.keys.RIGHT:
 				var index = key_state.indexOf(scope.keys.RIGHT);
-				if (index > -1) key_state.splice(index, 1);
-				break;
-			case scope.keys.STRAFFRIGHT:
-				var index = key_state.indexOf(scope.keys.STRAFFRIGHT);
 				if (index > -1) key_state.splice(index, 1);
 				break;
 			case scope.keys.JUMP:
@@ -478,9 +462,6 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		}
 	}
 
-	this.domElement.addEventListener('contextmenu', function (event) {
-		event.preventDefault();
-	}, false);
 	this.domElement.addEventListener('mousedown', onMouseDown, false);
 	this.domElement.addEventListener('mousewheel', onMouseWheel, false);
 	this.domElement.addEventListener('DOMMouseScroll', onMouseWheel, false); // firefox

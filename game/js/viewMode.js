@@ -60,7 +60,7 @@ function setupSystemView() {
 }
 
 function updateSystemView() {
-	updateGyro();
+	//updateGyro();
 
 	/*------------------------------
 	 * Socket fetch players

@@ -248,7 +248,7 @@ function makeSun( options ){
 
 	//	2D overlay elements	
 	gyro = new THREE.Gyroscope();
-	sun.add( gyro );	
+	//sun.add( gyro );	
 		sun.gyro = gyro;
 
     // console.time("make sun lensflare");
@@ -269,7 +269,7 @@ function makeSun( options ){
 		gyro.add( starGlow );
     // console.timeEnd("make sun glow");
 
-    updateGyro();
+    //updateGyro();
 
 	var latticeMaterial = new THREE.MeshBasicMaterial({
 		map: glowSpanTexture,
@@ -377,8 +377,4 @@ function makeSun( options ){
 
 
 	return sun;
-}
-
-function updateGyro() {
-	gyro.lookAt( camera.position );	
 }
