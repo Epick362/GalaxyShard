@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Space MMO</title>
-	    <link rel="stylesheet" type="text/css" href="game/css/bootstrap.min.css" />
-	    <link rel="stylesheet" type="text/css" href="game/css/bootstrap-theme.min.css" />
+	    <link rel="stylesheet" type="text/css" href="website/css/bootstrap.min.css" />
+	    <link rel="stylesheet" type="text/css" href="website/css/bootstrap-theme.min.css" />
 		<style>
 			body { margin: 0; overflow: hidden; background-color: #000; }
 			.webgl-error { font: 15px/30px monospace; text-align: center; color: #fff; margin: 50px; }

@@ -54,10 +54,6 @@ function setupSystemView() {
 		bounding.add(ship);
 		scene.add(bounding);
 		bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
-
-		controls = new THREE.PlayerControls(bounding, scene, ship, camera, renderer.domElement);
-		controls.minDistance = 0.1;
-
 		socket.emit('fetch.players');
 	});
 }
