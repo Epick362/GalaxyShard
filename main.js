@@ -176,24 +176,14 @@ function initWorld() {
 	window.addEventListener('resize', onWindowResize, false );
 
     scene.simulate();
-	animate();
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-    update();
-    render();
-}
-
-function update() {
-    // delta = change in time since last call (in seconds)
-    var delta = clock.getDelta();
-    THREE.AnimationHandler.update(delta);
-    if (controls) controls.update(delta);
+	render();
 }
 
 function render() {
 	renderer.clear();
+
+    var delta = clock.getDelta();
+    if (controls) controls.update(delta);
 
 	switch(viewMode) {
 		case 0:
@@ -209,6 +199,7 @@ function render() {
 		break;
 	}
 
+    requestAnimationFrame(render);
 	renderer.render(scene, camera);
 
 	stats.update();
