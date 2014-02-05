@@ -61,6 +61,7 @@ function addPlanetToScene(options) {
 
     var object = createPlanet(radius, options.name);
 	object.rotation.y = rotation; 
+	planet.name = options.name;
 	planet.add(object)
 
 	if(options.orbit != false) {
