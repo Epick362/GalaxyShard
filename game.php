@@ -14,7 +14,7 @@
 	</head>
 	<body onload="start()" oncontextmenu="return false">
 		<div id="webgl"></div>
-		<script src="game/js/jquery-2.0.3.min.js"></script>
+		<script src="website/js/jquery-2.0.3.min.js"></script>
 		<script src="game/js/three.min.js"></script>
 		<script src="game/js/physi.js"></script>
 		<script src="game/js/OBJLoader.js"></script>

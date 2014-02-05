@@ -3,10 +3,10 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<title>Space MMO</title>
-		<link rel="stylesheet" type="text/css" href="game/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="game/css/carousel.css" />
-		<link rel="stylesheet" type="text/css" href="game/css/custom.css" />
+		<title>GalaxyShards</title>
+		<link rel="stylesheet" type="text/css" href="website/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="website/css/carousel.css" />
+		<link rel="stylesheet" type="text/css" href="website/css/custom.css" />
 	</head>
 	<body>
 		<div class="navbar-wrapper">
@@ -21,7 +21,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				  </button>
-				  <a class="navbar-brand" href="#">Project name</a>
+				  <a class="navbar-brand" href="#">GalaxyShards</a>
 				</div>
 				<div class="navbar-collapse collapse">
 				  <ul class="nav navbar-nav">
@@ -49,51 +49,13 @@
 		</div>
 
 
-		<!-- Carousel
-		================================================== -->
-		<div id="slideshow" class="carousel slide" data-ride="carousel">
-		  <!-- Indicators -->
-		  <ol class="carousel-indicators">
-			<li data-target="#slideshow" data-slide-to="0" class="active"></li>
-			<li data-target="#slideshow" data-slide-to="1"></li>
-			<li data-target="#slideshow" data-slide-to="2"></li>
-		  </ol>
-		  <div class="carousel-inner">
-			<div class="item active">
-			  <img src="game/images/enviroment/env02.jpg" alt="First slide">
-			  <div class="container">
-				<div class="carousel-caption">
-				  <h1>Example headline.</h1>
-				  <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
-				  <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
+		<div class="image-promo">
+			<div class="container">
+				<div class="content">
+					The best browser MMORPG game in the universe <br /><small>- Albert Einstein</small>			
 				</div>
-			  </div>
 			</div>
-			<div class="item">
-			  <img src="game/images/enviroment/env07.jpg" alt="Second slide">
-			  <div class="container">
-				<div class="carousel-caption">
-				  <h1>Another example headline.</h1>
-				  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				  <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
-				</div>
-			  </div>
-			</div>
-			<div class="item">
-			  <img src="game/images/enviroment/env05.jpg" alt="Third slide">
-			  <div class="container">
-				<div class="carousel-caption">
-				  <h1>One more for good measure.</h1>
-				  <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				  <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		  <a class="left carousel-control" href="#slideshow" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-		  <a class="right carousel-control" href="#slideshow" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-		</div><!-- /.carousel -->
-
+		</div>
 		<!-- Marketing messaging and featurettes
 		================================================== -->
 		<!-- Wrap the rest of the page in another container to center all the content. -->
@@ -169,14 +131,59 @@
 		  <!-- FOOTER -->
 		  <footer>
 			<p class="pull-right"><a href="#">Back to top</a></p>
-			<p>&copy; 2014 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+			<p>&copy; 2014 Stardream, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
 		  </footer>
 
 		</div><!-- /.container -->
 
 		
-		<script src="game/js/jquery-2.0.3.min.js"></script>
-		<script src="game/js/bootstrap.min.js"></script>
-		<script src="game/js/holder.js"></script>
+		<script src="website/js/jquery-2.0.3.min.js"></script>
+		<script src="website/js/bootstrap.min.js"></script>
+		<script src="website/js/holder.js"></script>
+		<script type="text/javascript">
+			jQuery(document).ready(function($) {
+				b=parseFloat(-150);// Initial value for the first background (bk 0)
+				var scrollTop = $(window).scrollTop();
+				var scroll_actually= new Array();// Identifies the X and Y values for the background
+			 
+				$(window).scroll(function(){//This is not the cleanest way to do this, I'm just keeping it short.
+					if(scrollTop>$(this).scrollTop()) // Scroll up
+					{
+						if (getScrollTop()<=400 && getScrollTop()>=0)// Identifies the position for the first background when a scroll event occurs
+						{
+								b=b+20;
+								$('.image-promo').css('backgroundPosition', '0 '+b+'px');
+						}
+					}
+					else
+					{// Scroll down
+						if (getScrollTop()>=0 && getScrollTop()<=400)
+						{
+							  b=b-20;
+							  $('.image-promo').css('backgroundPosition', '0 '+b+'px');
+						}
+					}
+					if (getScrollTop()==0)// Adjusts the positions values and resets them to zero during a scroll up event
+					{
+						$('.image-promo').css('backgroundPosition', '0 -150px');
+					}
+				  scrollTop = $(this).scrollTop();
+				});
+			});
+
+			function getScrollTop(){ //  Verifies the total sum in pixels of the whole page
+			 
+				if(typeof pageYOffset!= 'undefined'){
+					// Most browsers
+					return pageYOffset;
+				}
+				else{
+					var B= document.body; //IE 'quirks'
+					var D= document.documentElement; //IE with doctype
+					D= (D.clientHeight)? D: B;
+					return D.scrollTop;
+				}
+			}
+		</script>
 	</body>
 </html>

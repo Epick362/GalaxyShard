@@ -29,12 +29,13 @@ function setupSystemView() {
 
 	// Actual Ship
 	ship = new THREE.Object3D();
-	ship.position.set(0, 3, 0);
+	//ship.position.set(0, 3, 0);
+
     bounding = new Physijs.SphereMesh(
-    new THREE.SphereGeometry(.01, .01, .001),
+    new THREE.SphereGeometry(.01, 64, 64),
     Physijs.createMaterial(
-    new THREE.MeshBasicMaterial({
-        color: '#ff0000'
+    new THREE.Material({
+        opacity: 0
     }),
     1.0, // high friction
     0.0 // low restitution
