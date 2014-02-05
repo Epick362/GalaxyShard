@@ -31,16 +31,16 @@ function setupSystemView() {
 	ship = new THREE.Object3D();
 	//ship.position.set(0, 3, 0);
 
-    bounding = new Physijs.SphereMesh(
-    new THREE.SphereGeometry(.01, 64, 64),
-    Physijs.createMaterial(
-    new THREE.Material({
-        opacity: 0
-    }),
-    1.0, // high friction
-    0.0 // low restitution
-    ),
-    0.1);
+	bounding = new Physijs.SphereMesh(
+	new THREE.SphereGeometry(.01, 64, 64),
+	Physijs.createMaterial(
+	new THREE.Material({
+		opacity: 0
+	}),
+	1.0, // high friction
+	0.0 // low restitution
+	),
+	0.1);
 
 	socket.emit('connect', {'name': player.name});
 	socket.on('connected', function(data) {
@@ -51,9 +51,12 @@ function setupSystemView() {
 		bounding.position.set(data.x, data.y, data.z);
 		//controls.center = new THREE.Vector3(data.x, data.y, data.z);
 		//scene.add(ship);
-	    bounding.add(ship);
-	    scene.add(bounding);
-	    bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
+		bounding.add(ship);
+		scene.add(bounding);
+		bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
+
+		controls = new THREE.PlayerControls(bounding, scene, ship, camera, renderer.domElement);
+		controls.minDistance = 0.1;
 
 		socket.emit('fetch.players');
 	});

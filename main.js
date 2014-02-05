@@ -162,9 +162,6 @@ function initWorld() {
 		break;
 	}
 
-	controls = new THREE.PlayerControls(bounding, scene, ship, camera, renderer.domElement);
-	controls.minDistance = 0.5;
-
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
 	stats.domElement.style.position = 'absolute';
