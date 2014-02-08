@@ -45,7 +45,7 @@ function setupSystemView() {
 
 	socket.emit('connect', {'name': player.name});
 	socket.on('connected', function(data) {
-		ship = new Ship([], player.name, data.ship);
+		ship = new Ship(data, player.name, data.ship);
 
 		ship.loadModel(function(object3d) {
 			shipContainer.add(object3d)

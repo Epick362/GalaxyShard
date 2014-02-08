@@ -162,7 +162,7 @@ function initWorld() {
 		break;
 	}
 
-	controls = new THREE.PlayerControls(bounding, scene, ship, camera, renderer.domElement);
+	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 	controls.minDistance = 0.1;
 
 	stats = new Stats();
