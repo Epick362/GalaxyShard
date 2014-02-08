@@ -2,7 +2,81 @@
 var width  = window.innerWidth,
 	height = window.innerHeight;
 
-var solarSystemData = 
+var solarSystemData = {
+		"planets" : [
+			{
+				"name" : "mercury",
+				"radius" : 4879,
+				"rotation" : 36,
+				"distance" : 57.9 / 5,
+				"revolution" : 2.2,
+				"orbitColor" : 0x444444
+			},
+			{
+				"name" : "venus",
+				"radius" : 12104,
+				"rotation" : 6,
+				"distance" : 108.2 / 5,
+				"revolution" : 1.8,
+				"orbitColor" : 0x555555
+			},
+			{
+				"name" : "earth",
+				"radius" : 12756,
+				"rotation" : 6,
+				"distance" : 149.6 / 5,
+				"revolution" : 2,
+				"clouds" : true,
+				"orbitColor" : 0xFF4400
+			},
+			{
+				"name" : "mars",
+				"radius" : 6792,
+				"rotation" : 6,
+				"distance" : 227.9 / 5,
+				"revolution" : 2.5,
+				"orbitColor" : 0x777777
+			},
+			{
+				"name" : "jupiter",
+				"radius" : 142984,
+				"rotation" : 6,
+				"distance" : 778.6 / 5,
+				"revolution" : 1.3,
+				"orbitColor" : 0x999999
+			},
+			{
+				"name" : "saturn",
+				"radius" : 120536,
+				"rotation" : 6,
+				"distance" : 1433.5 / 5,
+				"revolution" : 1.4,
+				"orbitColor" : 0x999999
+			},
+			{
+				"name" : "uranus",
+				"radius" : 51118,
+				"rotation" : 6,
+				"distance" : 2872.5 / 5,
+				"revolution" : 1,
+				"orbitColor" : 0x999999
+			},
+			{
+				"name" : "neptune",
+				"radius" : 49528,
+				"rotation" : 6,
+				"distance" : 4495.1 / 5,
+				"revolution" : 0.8,
+				"orbitColor" : 0x999999
+			}
+		],
+		"stars": [
+			{
+				"name" : "sun",
+				"radius" : 7.35144e8,
+				"spectral" : 1
+			}
+		]
 	};
 
 var viewMode = 1; // 0 = Orbital / 1 = System / 2 = Galaxy 
@@ -20,6 +94,8 @@ Physijs.scripts.worker = 'game/js/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
 THREE.PlayerControls.prototype = Object.create(THREE.EventDispatcher.prototype);
+
+//var keyboard = new KeyboardState();
 
 var webglEl = document.getElementById('webgl');
 
