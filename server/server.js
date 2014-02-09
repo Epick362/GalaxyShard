@@ -42,5 +42,4 @@ io.sockets.on('connection', function (socket) {
   	socket.on('fetch.players', function(data) {
 		io.sockets.emit('fetch.players', players);
   	});
-
 });

@@ -32,7 +32,6 @@
 		<script src="game/core/sun.js"></script> 		
 		<script src="game/core/solarsystem.js"></script>
 		<script src="game/core/entity.js"></script>
-		<script src="game/core/ship.js"></script>
 		<script src="game/core/viewMode.js"></script>
 
 		<script src="main.js"></script>  

@@ -174,7 +174,8 @@ function initWorld() {
 	webglEl.appendChild(renderer.domElement);
 
 	window.addEventListener('resize', onWindowResize, false );
-
+	
+	console.log(scene.children);
     scene.simulate();
 	render();
 }
@@ -195,7 +196,7 @@ function render() {
 		break;
 
 		case 2:
-			setupGalaxyView();
+			updateGalaxyView();
 		break;
 	}
 

@@ -43,3 +43,84 @@ Entity = function(data) {
 		loader.load(objUrl, mtlUrl);
 	};
 }
+
+Ship = function(data, name, model) {
+	this.name = name;
+	this.model = model;
+}
+Ship.prototype = new Entity();
+
+PlanetBody = function(data, planet) {
+	this.planet = planet;
+
+	var planetContainer = new THREE.Object3D();
+	var planetObject = new THREE.Object3D();
+	var planetOrbit = new THREE.Object3D();
+
+	this.makePlanetObject = function() {
+		if(this.planet.name == "earth") {
+			return new THREE.Mesh(
+				new THREE.SphereGeometry(this.planet.radius, 64, 64),
+				new THREE.MeshPhongMaterial({
+					map:         THREE.ImageUtils.loadTexture('game/images/2_no_clouds_4k.jpg'),
+					bumpMap:     THREE.ImageUtils.loadTexture('game/images/elev_bump_4k.jpg'),
+					bumpScale:   0.01,
+					specularMap: THREE.ImageUtils.loadTexture('game/images/water_4k.png'),
+					specular:    new THREE.Color('grey')					
+				})
+			);
+		}else{
+			return new THREE.Mesh(
+				new THREE.SphereGeometry(this.planet.radius, 64, 64),
+				new THREE.MeshPhongMaterial({
+					map:         THREE.ImageUtils.loadTexture('game/images/planets/'+this.planet.name+'map.jpg'),
+					specular:    new THREE.Color('grey')					
+				})
+			);
+		}
+	};
+
+	this.createPlanet = function() {
+		radius = KMToLY(this.planet.radius) * 6;
+
+		planetObject = this.makePlanetObject();
+		planetObject.name = this.planet.name+" sphere";
+		planetContainer.add(planetObject)
+		planetContainer.name = this.planet.name;
+
+		if(this.planet.orbit != false) {
+			// Create Orbit Lines
+			var resolution = 500;
+			var amplitude = this.planet.distance;
+			var size = 360 / resolution;
+
+			var geometry = new THREE.Geometry();
+			var material = new THREE.LineBasicMaterial( { color: this.planet.orbitColor, opacity: 0.8} );
+			for(var i = 0; i <= resolution; i++) {
+			    var segment = ( i * size ) * Math.PI / 180;
+			    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         
+			}
+
+			var line = new THREE.Line( geometry, material );
+			planetContainer.add(line);
+			// Create Orbit Lines END
+		}
+
+		return planetContainer;
+	};
+
+	this.updatePlanet = function() {
+		var time = new Date();
+		angle = time * this.planet.revolution * 0.00001;
+
+		planetObject.position.set(this.planet.distance * Math.cos(angle), 0, this.planet.distance * Math.sin(angle));
+		planetObject.rotation.x += this.planet.rotation / 10000;
+	};
+}
+PlanetBody.prototype = new Entity();
+
+
+
+
+
+

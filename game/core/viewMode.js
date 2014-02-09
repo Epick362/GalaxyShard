@@ -55,6 +55,8 @@ function setupSystemView() {
 		//controls.center = new THREE.Vector3(data.x, data.y, data.z);
 		//scene.add(ship);
 		bounding.add(shipContainer);
+		bounding.name = player.name+"\'s Ship";
+		
 		scene.add(bounding);
 		bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
 		socket.emit('fetch.players');
@@ -85,12 +87,6 @@ function updateSystemView() {
 	});
 */
 	for (var i = planets.length - 1; i >= 0; i--) {
-		planet = planets[i];
-		updatePlanet(planet);
-
-		var time = new Date();
-		angle = time * planet.revolution * 0.00001;
-
-		planet.object.position.set(planet.distance * Math.cos(angle), 0, planet.distance * Math.sin(angle));
+		planets[i].updatePlanet();
 	};
 }
