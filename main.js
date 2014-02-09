@@ -32,7 +32,7 @@ var solarSystemData = {
 			{
 				"name" : "mars",
 				"radius" : 6792,
-				"rotation" : 6,
+				"rotation" : -26,
 				"distance" : 227.9 / 5,
 				"revolution" : 2.5,
 				"orbitColor" : 0x777777
@@ -175,7 +175,6 @@ function initWorld() {
 
 	window.addEventListener('resize', onWindowResize, false );
 	
-	console.log(scene.children);
     scene.simulate();
 	render();
 }

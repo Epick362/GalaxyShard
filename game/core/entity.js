@@ -81,7 +81,7 @@ PlanetBody = function(data, planet) {
 	};
 
 	this.createPlanet = function() {
-		radius = KMToLY(this.planet.radius) * 6;
+		this.planet.radius = KMToLY(this.planet.radius) * 6;
 
 		planetObject = this.makePlanetObject();
 		planetObject.name = this.planet.name+" sphere";
@@ -90,7 +90,7 @@ PlanetBody = function(data, planet) {
 
 		if(this.planet.orbit != false) {
 			// Create Orbit Lines
-			var resolution = 500;
+			var resolution = 400;
 			var amplitude = this.planet.distance;
 			var size = 360 / resolution;
 
@@ -114,7 +114,7 @@ PlanetBody = function(data, planet) {
 		angle = time * this.planet.revolution * 0.00001;
 
 		planetObject.position.set(this.planet.distance * Math.cos(angle), 0, this.planet.distance * Math.sin(angle));
-		planetObject.rotation.x += this.planet.rotation / 10000;
+		planetObject.rotation.y += this.planet.rotation / 10000;
 	};
 }
 PlanetBody.prototype = new Entity();

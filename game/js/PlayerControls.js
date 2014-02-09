@@ -117,7 +117,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			
 			var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
 
-			var speed = this.walking ? 0.5 : 1;
+			var speed = this.walking ? 0.5 : 2;
 			var force_vector;
 
 			force_vector = new THREE.Vector3(0, 0, speed).applyMatrix4(rotation_matrix);
@@ -130,7 +130,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		} else if (key_state.indexOf(this.keys.DOWN) > -1) {
 			var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
 
-			var speed = this.walking ? -0.5 : -.5;
+			var speed = this.walking ? -0.5 : -2;
 			var force_vector;
 
 			force_vector = new THREE.Vector3(0, 0, speed).applyMatrix4(rotation_matrix);
