@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		<title>GalaxyShards</title>
+		<title>GalaxyShard</title>
 		<link rel="stylesheet" type="text/css" href="website/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="website/css/carousel.css" />
 		<link rel="stylesheet" type="text/css" href="website/css/custom.css" />
