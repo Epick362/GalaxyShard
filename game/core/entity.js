@@ -95,7 +95,7 @@ PlanetBody = function(data, planet) {
 			var size = 360 / resolution;
 
 			var geometry = new THREE.Geometry();
-			var material = new THREE.LineBasicMaterial( { color: this.planet.orbitColor, opacity: 0.8} );
+			var material = new THREE.LineBasicMaterial( { color: this.planet.orbitColor, opacity: 0.3} );
 			for(var i = 0; i <= resolution; i++) {
 			    var segment = ( i * size ) * Math.PI / 180;
 			    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         
@@ -104,6 +104,10 @@ PlanetBody = function(data, planet) {
 			var line = new THREE.Line( geometry, material );
 			planetContainer.add(line);
 			// Create Orbit Lines END
+
+			if(typeof this.planet.orbit == "object") {
+				planetContainer.rotation.set(this.planet.orbit.rotation.x, this.planet.orbit.rotation.y, this.planet.orbit.rotation.z);
+			}
 		}
 
 		return planetContainer;

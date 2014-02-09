@@ -28,11 +28,11 @@
 		<script src="game/js/shaderlist.js"></script>  
 		<script src="game/js/lensflare.js"></script>	
 
-		<script src="game/core/background.js"></script> 		  		
-		<script src="game/core/sun.js"></script> 		
-		<script src="game/core/solarsystem.js"></script>
+		<script src="game/core/environment.js"></script> 		  		
+		<script src="game/core/sun.js"></script>
 		<script src="game/core/entity.js"></script>
-		<script src="game/core/viewMode.js"></script>
+		<script src="game/core/player.js"></script>
+		<script src="game/core/view.js"></script>
 
 		<script src="main.js"></script>  
 		<script type="text/javascript" src="server/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"></script>
