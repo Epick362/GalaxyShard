@@ -1,17 +1,14 @@
 View = function(mode) {
 	this.mode = mode;
-	this.view;
+	this.view = new Initialize();
+	this.update = new Update();
 
-	this.Setup = function() {
-		this.view = new Setup();
-
-		return view.init();
+	this.Initialize = function() {
+		return this.view.init();
 	};
 
 	this.Update = function() {
-		this.view = new Update();
-
-		return view.init();
+		return this.update.init();
 	};
 };
 

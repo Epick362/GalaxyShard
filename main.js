@@ -156,19 +156,8 @@ function initWorld() {
 
 	socket = io.connect('http://localhost:8080');
 
-	switch(viewMode) {
-		case 0:
-			setupOrbitalView();
-		break;
-
-		case 1:
-			setupSystemView();
-		break;
-
-		case 2:
-			setupGalaxyView();
-		break;
-	}
+	view = new View(viewMode);
+	view.Initialize();
 
 	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 	controls.minDistance = 0.1;
@@ -193,19 +182,7 @@ function render() {
     var delta = clock.getDelta();
     if (controls) controls.update(delta);
 
-	switch(viewMode) {
-		case 0:
-			updateOrbitalView();
-		break;
-
-		case 1:
-			updateSystemView();
-		break;
-
-		case 2:
-			updateGalaxyView();
-		break;
-	}
+    view.Update();
 
     requestAnimationFrame(render);
 	renderer.render(scene, camera);
