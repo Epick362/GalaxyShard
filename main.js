@@ -156,8 +156,9 @@ function initWorld() {
 
 	socket = io.connect('http://localhost:8080');
 
-	view = new View(viewMode);
-	view.Initialize();
+	view = new View(viewMode, solarSystemData);
+	console.log(view.InitializeWorld());
+	scene.add(view.InitializeWorld());
 
 	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 	controls.minDistance = 0.1;
@@ -182,7 +183,7 @@ function render() {
     var delta = clock.getDelta();
     if (controls) controls.update(delta);
 
-    view.Update();
+    view.UpdateWorld();
 
     requestAnimationFrame(render);
 	renderer.render(scene, camera);
