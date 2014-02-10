@@ -57,6 +57,10 @@ function setupSystemView() {
 		//scene.add(ship);
 		bounding.add(shipContainer);
 		bounding.name = player.name+"\'s Ship";
+
+		setInterval(function(){
+			socket.emit('player.move', {name: player.name, position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z}});
+		}, 3000);
 		
 		scene.add(bounding);
 		bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
@@ -70,22 +74,22 @@ function updateSystemView() {
 	/*------------------------------
 	 * Socket fetch players
 	 *------------------------------*/
-/*
+
 	socket.on('fetch.players', function(data) {
 		var players = data;
 		console.log(players);
 		for (var i in players) {
 			p = players[i];
-			ships[i] = new THREE.Object3D();
-			loadShip(function(object3d){
-				ships[i].add(object3d)
-			}, p.ship);
+			//ships[i] = new THREE.Object3D();
+			//loadShip(function(object3d){
+			//	ships[i].add(object3d)
+			//}, p.ship);
 
 			console.log('Player:'+p.name+' '+p.x+' '+p.y+' '+p.z);
-			scene.add(ships[i]);
-			ships[i].position.set(p.x, p.y, p.z);
+			//scene.add(ships[i]);
+			//ships[i].position.set(p.x, p.y, p.z);
 		}
 	});
-*/
+
 	env.update();
 }
