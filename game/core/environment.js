@@ -1,5 +1,6 @@
 Environment = function(data) {
-	this.data = data;
+	this.data = data || {};
+	console.log(data);
 
 	this.Skybox = function() {
 		if(!this.data.env) {

@@ -3,9 +3,8 @@ var io = require('socket.io').listen(8080);
 /*------------------------------
  * Player class
  *------------------------------*/
-function Player(name, _id, x, y, z, ship) {
+function Player(name, x, y, z, ship) {
 	this.name = name;
-	this.id = _id;
 	this.x = x;
 	this.y = y;
 	this.z = z;
@@ -24,7 +23,7 @@ io.sockets.on('connection', function (socket) {
 	socket.on('connect', function(data) {
 		ships.findOne({name: data.name}).on('success', function (ship) {
 			console.log('Connected:' +data.name);
-			players[data.name] = new Player(data.name, ship._id, ship.x, ship.y, ship.z, ship.ship);
+			players[data.name] = new Player(data.name, ship.x, ship.y, ship.z, ship.ship);
 			socket.emit('connected', ship);			
 		});
 	});
@@ -34,10 +33,11 @@ io.sockets.on('connection', function (socket) {
 		players[data.name].x = data.position.x;
 		players[data.name].y = data.position.y;
 		players[data.name].z = data.position.z;
-
+/*
 		ships.updateById(players[data.name].id, {x: players[data.name].x, y: players[data.name].y, z: players[data.name].z}, function (err, doc) {
 			if (err) throw err;
 		});
+/*
   	});
 
   	/*------------------------------

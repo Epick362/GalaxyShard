@@ -1,19 +1,7 @@
-<<<<<<< HEAD
-=======
 View = function(mode, data) {
 	this.mode = mode;
 	this.data = data;
 	this.env = new Environment(this.data);
-
-	this.InitializeWorld = function() {
-		this.initialize = new Initialize(this.mode, this.data);
-		return this.initialize.init();
-	};
-
-	this.UpdateWorld = function() {
-		this.update = new Update();
-		return this.update.init();
-	};
 };
 
 Initialize = function(mode, data) {
@@ -22,7 +10,6 @@ Initialize = function(mode, data) {
 	this.objectContainer = new THREE.Object3D();
 
 	this.init = function() {
-		console.log(this.mode);
 		switch(this.mode) {
 			case 0: return this.Orbital();
 			break;
@@ -50,7 +37,7 @@ Initialize = function(mode, data) {
 		player.name = prompt('enter name');
 
 		// Actual Ship
-		var shipContainer = new THREE.Object3D();
+		shipContainer = new THREE.Object3D();
 		//ship.position.set(0, 3, 0);
 
 		bounding = new Physijs.SphereMesh(
@@ -120,6 +107,17 @@ Update = function(mode, data) {
 	};
 };
 Update.prototype = new View();
+
+
+View.prototype.InitializeWorld = function() {
+	this.initialize = new Initialize(this.mode, this.data);
+	return this.initialize.init();
+};
+
+View.prototype.UpdateWorld = function() {
+	this.update = new Update();
+	return this.update.init();
+};
 /*
 >>>>>>> parent of 571be1d... Revert 350f492..77e77d0
 function setupOrbitalView() {
@@ -192,16 +190,13 @@ function setupSystemView() {
 		socket.emit('fetch.players');
 	});
 }
-
-=======
->>>>>>> parent of 571be1d... Revert 350f492..77e77d0
 function updateSystemView() {
 	//updateGyro();
 
 	/*------------------------------
 	 * Socket fetch players
 	 *------------------------------*/
-
+/*
 	socket.on('fetch.players', function(data) {
 		var players = data;
 		console.log(players);
@@ -217,10 +212,6 @@ function updateSystemView() {
 			//ships[i].position.set(p.x, p.y, p.z);
 		}
 	});
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 571be1d... Revert 350f492..77e77d0
 	env.update();
 }
 */

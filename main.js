@@ -157,7 +157,6 @@ function initWorld() {
 	socket = io.connect('http://localhost:8080');
 
 	view = new View(viewMode, solarSystemData);
-	console.log(view.InitializeWorld());
 	scene.add(view.InitializeWorld());
 
 	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
