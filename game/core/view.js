@@ -1,22 +1,20 @@
 View = function(mode, data) {
 	this.mode = mode;
 	this.data = data;
-	this.env = new Environment(this.data);
+	env = new Environment(this.data);
 };
 
 Initialize = function(mode, data) {
 	this.mode = mode;
 	this.data = data;
-	this.objectContainer = new THREE.Object3D();
+	var objectContainer = new THREE.Object3D();
 
 	this.init = function() {
 		switch(this.mode) {
 			case 0: return this.Orbital();
 			break;
 
-			case 1: 
-				console.log('kol');
-				return this.System();
+			case 1: return this.System();
 			break;
 
 			case 2: return this.Galaxy();
@@ -29,9 +27,9 @@ Initialize = function(mode, data) {
 	};
 
 	this.System = function() {
-		this.objectContainer.add(this.env.Skybox())
-		this.objectContainer.add(this.env.StarDebris())
-		this.objectContainer.add(this.env.SolarSystem())
+		objectContainer.add(env.Skybox())
+		objectContainer.add(env.StarDebris())
+		objectContainer.add(env.SolarSystem())
 
 		player = {};
 		player.name = prompt('enter name');
@@ -64,12 +62,13 @@ Initialize = function(mode, data) {
 			bounding.add(shipContainer);
 			bounding.name = player.name+"\'s Ship";
 			
-			this.objectContainer.add(bounding)
+			objectContainer.add(bounding)
 			bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
 			socket.emit('fetch.players');
 		});	
 
-		return this.objectContainer;
+		objectContainer.name = "Solar system";
+		return objectContainer;
 	};
 
 	this.Galaxy = function() {
@@ -78,9 +77,8 @@ Initialize = function(mode, data) {
 };
 Initialize.prototype = new View();
 
-Update = function(mode, data) {
+Update = function(mode) {
 	this.mode = mode;
-	this.data = data;
 	this.init = function() {
 		switch(this.mode) {
 			case 0: return this.Orbital();
@@ -99,7 +97,7 @@ Update = function(mode, data) {
 	};
 
 	this.System = function() {
-		this.env.update()
+		env.update()
 	};
 
 	this.Galaxy = function() {
@@ -110,14 +108,15 @@ Update.prototype = new View();
 
 
 View.prototype.InitializeWorld = function() {
-	this.initialize = new Initialize(this.mode, this.data);
-	return this.initialize.init();
+	var initialize = new Initialize(this.mode, this.data);
+	return initialize.init();
 };
 
 View.prototype.UpdateWorld = function() {
-	this.update = new Update();
-	return this.update.init();
+	var update = new Update(this.mode);
+	return update.init();
 };
+
 /*
 >>>>>>> parent of 571be1d... Revert 350f492..77e77d0
 function setupOrbitalView() {

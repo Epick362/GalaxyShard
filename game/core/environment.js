@@ -1,11 +1,8 @@
 Environment = function(data) {
-	this.data = data || {};
-	console.log(data);
+	this.data = data;
+	this.planets;
 
 	this.Skybox = function() {
-		if(!this.data.env) {
-			this.data.env = 'env01';
-		}
 		var starfield = new THREE.Mesh(
 			new THREE.SphereGeometry(100000, 32, 32), 
 			new THREE.MeshBasicMaterial({
