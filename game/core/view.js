@@ -8,6 +8,8 @@ Initialize = function(mode, data) {
 	this.mode = mode;
 	this.data = data;
 	var objectContainer = new THREE.Object3D();
+	var shipContainer;
+	var bounding;
 
 	this.init = function() {
 		switch(this.mode) {
@@ -22,8 +24,12 @@ Initialize = function(mode, data) {
 		}
 	};
 
-	this.Orbital = function() {
+	this.getBounding = function() {
+		return bounding;
+	};
 
+	this.Orbital = function() {
+		return shipContainer;
 	};
 
 	this.System = function() {
@@ -35,10 +41,10 @@ Initialize = function(mode, data) {
 		player.name = prompt('enter name');
 
 		// Actual Ship
-		shipContainer = new THREE.Object3D();
+		this.shipContainer = new THREE.Object3D();
 		//ship.position.set(0, 3, 0);
 
-		bounding = new Physijs.SphereMesh(
+		this.bounding = new Physijs.SphereMesh(
 			new THREE.SphereGeometry(.01, 64, 64),
 			Physijs.createMaterial(
 				new THREE.Material({
@@ -55,15 +61,15 @@ Initialize = function(mode, data) {
 			ship = new Ship(data, player.name, data.ship);
 
 			ship.loadModel(function(object3d) {
-				shipContainer.add(object3d)
+				this.shipContainer.add(object3d)
 			});
 
-			bounding.position.set(data.x, data.y, data.z);
-			bounding.add(shipContainer);
-			bounding.name = player.name+"\'s Ship";
+			this.bounding.position.set(data.x, data.y, data.z);
+			this.bounding.add(this.shipContainer);
+			this.bounding.name = player.name+"\'s Ship";
 			
-			objectContainer.add(bounding)
-			bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
+			objectContainer.add(this.bounding)
+			this.bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
 			socket.emit('fetch.players');
 		});	
 
@@ -106,17 +112,23 @@ Update = function(mode) {
 };
 Update.prototype = new View();
 
-
 View.prototype.InitializeWorld = function() {
-	var initialize = new Initialize(this.mode, this.data);
+	initialize = new Initialize(this.mode, this.data);
 	return initialize.init();
 };
 
 View.prototype.UpdateWorld = function() {
-	var update = new Update(this.mode);
+	update = new Update(this.mode);
 	return update.init();
 };
 
+View.prototype.getBounding = function() {
+	return initialize.getBounding();
+};
+
+View.prototype.getShip = function() {
+	return initialize.getShip();
+};
 /*
 >>>>>>> parent of 571be1d... Revert 350f492..77e77d0
 function setupOrbitalView() {

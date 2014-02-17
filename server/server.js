@@ -22,7 +22,6 @@ io.sockets.on('connection', function (socket) {
 	
 	socket.on('connect', function(data) {
 		users.findOne({name: data.name}).on('success', function (ship) {
-			console.log('PositionX:' +ship.x);
 			console.log('Connected:' +data.name);
 			players[data.name] = new Player(data.name, ship.x, ship.y, ship.z, ship.ship);
 			socket.emit('connected', ship);			
