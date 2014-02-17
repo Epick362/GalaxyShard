@@ -252,7 +252,7 @@ function makeSun( options ){
 		sun.gyro = gyro;
 
     // console.time("make sun lensflare");
-		var starLensflare = makeStarLensflare(10, 0.1, spectral);
+		var starLensflare = makeStarLensflare(100, 10, spectral);
 		sun.lensflare = starLensflare;
 		sun.lensflare.name == 'lensflare';
 		gyro.add( starLensflare );
@@ -302,8 +302,8 @@ function makeSun( options ){
 	sun.haloUniforms = haloUniforms;
 	sun.coronaUniforms = coronaUniforms;
 
-	// sun.rotation.z = -0.93;
-	// sun.rotation.y = 0.2;
+	sun.rotation.z = -0.93;
+	sun.rotation.y = 0.2;
 
 	sun.setSpectralIndex = function( index ){
 		var starColor = map( index, -0.3, 1.52, 0, 1);
@@ -339,25 +339,13 @@ function makeSun( options ){
 
 	sun.update = function(){
 		this.sunUniforms.time.value = shaderTiming;
-		this.haloUniforms.time.value = shaderTiming + rotateYAccumulate;
+		this.haloUniforms.time.value = shaderTiming;
 		this.solarflareUniforms.time.value = shaderTiming;
 		
-		//	ugly.. terrible hack
-		//	no matter what I do I can't remove the lensflare visibility at a distance
-		//	which was causing jittering on pixels when the lensflare was too small to be visible
-		//	is this the only way?
-		
-		//if( camera.position.z > 400 ){
-		//	var lensflareChild = this.gyro.getObjectByName('lensflare');
-		//	if( lensflareChild !== undefined )
-		//		this.gyro.remove(  lensflareChild );
-		//}
-		//else{
-		//	if( this.gyro.getObjectByName('lensflare') === undefined ){
-		//		this.gyro.add( this.lensflare );			
-		//	}
-		//}
-	}		
+		if( this.gyro.getObjectByName('lensflare') === undefined ){
+			this.gyro.add( this.lensflare );			
+		}
+	}
 
 	//	test controls
 

@@ -1,6 +1,7 @@
 Environment = function(data) {
 	this.data = data;
 	this.planets;
+	this.star;
 
 	this.Skybox = function() {
 		var starfield = new THREE.Mesh(
@@ -78,13 +79,13 @@ Environment = function(data) {
 
 		// Create stars in solarsystem
 		for (var i in this.data.stars) {
-			star = makeSun(
+			this.star = makeSun(
 			 	{
 			 		radius: KMToLY(this.data.stars[i].radius),
 			 		spectral: this.data.stars[i].spectral
 			 	}
 			 );
-			solarsystem.add(star);
+			solarsystem.add(this.star);
 		};
 
 		// Create planets in solarsystem
@@ -96,9 +97,11 @@ Environment = function(data) {
 		return solarsystem;
 	};
 
-	this.update = function() {
+	this.update = function(playerPosition) {
 		for (var i in this.planets) {
 			this.planets[i].updatePlanet();
 		};
+
+		this.star.update();
 	};
 };

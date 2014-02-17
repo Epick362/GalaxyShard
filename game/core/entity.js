@@ -95,7 +95,7 @@ PlanetBody = function(data, planet) {
 			var size = 360 / resolution;
 
 			var geometry = new THREE.Geometry();
-			var material = new THREE.LineBasicMaterial( { color: this.planet.orbitColor, opacity: 0.3} );
+			var material = new THREE.LineBasicMaterial( { color: 0x666666, opacity: 0.3} );
 			for(var i = 0; i <= resolution; i++) {
 			    var segment = ( i * size ) * Math.PI / 180;
 			    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         

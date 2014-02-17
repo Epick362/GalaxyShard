@@ -9,16 +9,14 @@ var solarSystemData = {
 			radius : 4879,
 			rotation : 12,
 			distance : 57.9,
-			revolution : 2.2,
-			orbitColor : 0x444444
+			revolution : 2.2
 		},
 		{
 			name : "venus",
 			radius : 12104,
 			rotation : 8,
 			distance : 108.2,
-			revolution : 1.8,
-			orbitColor : 0x555555
+			revolution : 1.8
 		},
 		{
 			name : "earth",
@@ -27,7 +25,6 @@ var solarSystemData = {
 			distance : 149.6,
 			revolution : 2,
 			clouds : true,
-			orbitColor: 0xFF4400,
 			orbit : {
 				rotation : {
 					x: 0,
@@ -41,40 +38,35 @@ var solarSystemData = {
 			radius : 6792,
 			rotation : -3,
 			distance : 227.9,
-			revolution : 2.5,
-			orbitColor : 0x777777
+			revolution : 2.5
 		},
 		{
 			name : "jupiter",
 			radius : 142984,
 			rotation : 2,
 			distance : 778.6,
-			revolution : 1.3,
-			orbitColor : 0x999999
+			revolution : 1.3
 		},
 		{
 			name : "saturn",
 			radius : 120536,
 			rotation : 2,
 			distance : 1433.5,
-			revolution : 1.4,
-			orbitColor : 0x999999
+			revolution : 1.4
 		},
 		{
 			name : "uranus",
 			radius : 51118,
 			rotation : 2,
 			distance : 2872.5,
-			revolution : 1,
-			orbitColor : 0x999999
+			revolution : 1
 		},
 		{
 			name : "neptune",
 			radius : 49528,
 			rotation : 1,
 			distance : 4495.1,
-			revolution : 0.8,
-			orbitColor : 0x999999
+			revolution : 0.8
 		}
 	],
 	stars: [
@@ -97,6 +89,9 @@ var players = {};
 var clock = new THREE.Clock();
 
 var cameraMaxDistance = 100000;
+
+var startTime = Date.now();
+var shaderTiming = 0;
 
 Physijs.scripts.worker = 'game/js/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
@@ -149,7 +144,7 @@ function initWorld() {
 	// Camera Settings
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.01, cameraMaxDistance);
 
-	renderer = new THREE.WebGLRenderer({antialias: true});
+	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(width, height);
 
 	scene.add(new THREE.AmbientLight(0x444444));
@@ -224,6 +219,8 @@ function initWorld() {
 
 function render() {
 	renderer.clear();
+
+	shaderTiming = (Date.now() - startTime )/ 1000;
 
     var delta = clock.getDelta();
     if (controls) controls.update(delta);
