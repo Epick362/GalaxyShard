@@ -158,7 +158,7 @@ function initWorld() {
 
 	scene.add(view.InitializeWorld());
 
-	controls = new THREE.PlayerControls(view.getBounding(), scene, view.getShip(), camera, renderer.domElement);
+	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 	controls.minDistance = 0.1;
 
 	stats = new Stats();
