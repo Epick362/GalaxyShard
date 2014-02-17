@@ -115,7 +115,7 @@ PlanetBody = function(data, planet) {
 
 	this.updatePlanet = function() {
 		var time = new Date();
-		angle = time * this.planet.revolution * 0.00001;
+		angle = time * this.planet.revolution * 0.000001;
 
 		planetObject.position.set(this.planet.distance * Math.cos(angle), 0, this.planet.distance * Math.sin(angle));
 		planetObject.rotation.y += this.planet.rotation / 10000;

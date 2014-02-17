@@ -48,6 +48,9 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		JUMP: 32,
 	};
 
+	this.maxSpeed = 2;
+	this.acceleration = 0.01;
+
 	// internals
 	var scope = this;
 
@@ -67,6 +70,8 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	var scale = 1;
 
 	var lastPosition = new THREE.Vector3();
+
+	var velocity = 0;
 
 	var STATE = {
 		NONE: -1,
@@ -114,51 +119,55 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 
 	this.update = function (delta) {
 		if (key_state.indexOf(this.keys.UP) > -1) {
-			
-			var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
-
-			var speed = 3;
-			var force_vector;
-
-			force_vector = new THREE.Vector3(0, 0, speed).applyMatrix4(rotation_matrix);
+			if(velocity + this.acceleration < this.maxSpeed) {
+				velocity += this.acceleration;
+			}else{
+				velocity = this.maxSpeed;
+			}
 			this.player.rotation.set(0, 0, 0);
 
-			this.anchor.setLinearVelocity(force_vector);
 			this.moving = true;
 
 			// forward
 		} else if (key_state.indexOf(this.keys.DOWN) > -1) {
-			var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
-
-			var speed = -.5;
-			var force_vector;
-
-			force_vector = new THREE.Vector3(0, 0, speed).applyMatrix4(rotation_matrix);
+			if(velocity - this.acceleration >= 0) {
+				velocity -= this.acceleration;
+			}else{
+				velocity = 0;
+			}
 			this.player.rotation.set(0, 0, 0);
 
-			this.anchor.setLinearVelocity(force_vector);
 			this.moving = true;
 
 			//back
 		} else if (this.moving) {
 			this.player.rotation.set(0, 0, 0);
-			this.anchor.setLinearVelocity(new THREE.Vector3(0, 0, 0));
-			this.moving = false;
+			velocity -= velocity/1000;
+
+			if(velocity == 0) {
+				this.moving = false;	
+			}
 		}
 
 		//turn
 		if (key_state.indexOf(this.keys.LEFT) > -1 && key_state.indexOf(this.keys.RIGHT) < 0) {
-			this.anchor.setAngularVelocity(new THREE.Vector3(0, 0.5, 0));
+			this.anchor.setAngularVelocity(new THREE.Vector3(0, 0.8, 0));
 			this.turning = true;
 			//turning
 		} else if (key_state.indexOf(this.keys.RIGHT) > -1) {
-			this.anchor.setAngularVelocity(new THREE.Vector3(0, -0.5, 0));
+			this.anchor.setAngularVelocity(new THREE.Vector3(0, -0.8, 0));
 			this.turning = true;
 			//turning
 		} else if (this.turning) {
 			this.anchor.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 			this.turning = false;
 		}
+
+		// set the speed
+		var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
+		var force_vector = new THREE.Vector3(0, 0, velocity).applyMatrix4(rotation_matrix);
+		this.anchor.setLinearVelocity(force_vector);
+
 
 		var position = this.camera.position;
 		var offset = position.clone().sub(this.center);
@@ -172,6 +181,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		theta += thetaDelta;
 		phi += phiDelta;
 
+		/*
 		if ((this.moving || this.turning) && state != STATE.ROTATE) {
 			var curr_rot = new THREE.Euler(0, 0, 0, "YXZ").setFromRotationMatrix(this.camera.matrixWorld).y;
 			var dest_rot = new THREE.Euler(0, 0, 0, "YXZ").setFromRotationMatrix(this.anchor.matrixWorld).y;
@@ -182,7 +192,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			// fix pitch (should be an option or it could get anoying)
 			//phi = 9*Math.PI/24;
 		}
-
+		*/
 		// restrict phi to be between desired limits
 		phi = Math.max(this.minPolarAngle, Math.min(this.maxPolarAngle, phi));
 
