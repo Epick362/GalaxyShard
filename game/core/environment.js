@@ -3,6 +3,9 @@ Environment = function(data) {
 	this.planets;
 	this.star;
 
+	this.smallStars = 3000;
+	this.bigStars = 12000;
+
 	this.Skybox = function() {
 		var starfield = new THREE.Mesh(
 			new THREE.SphereGeometry(100000, 32, 32), 
@@ -16,10 +19,10 @@ Environment = function(data) {
 	};
 
 	this.StarDebris = function() {
-		var i, r = 5, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
+		var i, r = 10, starsGeometry = [ new THREE.Geometry(), new THREE.Geometry() ];
 		var starContainer = new THREE.Object3D();
 
-		for ( i = 0; i < 650; i ++ ) {
+		for ( i = 0; i < this.smallStars; i ++ ) {
 
 			var vertex = new THREE.Vector3();
 			vertex.x = Math.random() * 2 - 1;
@@ -31,7 +34,7 @@ Environment = function(data) {
 
 		}
 
-		for ( i = 0; i < 2500; i ++ ) {
+		for ( i = 0; i < this.bigStars; i ++ ) {
 
 			var vertex = new THREE.Vector3();
 			vertex.x = Math.random() * 2 - 1;
