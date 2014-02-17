@@ -125,8 +125,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 
 			this.anchor.setLinearVelocity(force_vector);
 			this.moving = true;
-
-			console.log('forward')
+			
 			// forward
 		} else if (key_state.indexOf(this.keys.DOWN) > -1) {
 			var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);

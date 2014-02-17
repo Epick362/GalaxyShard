@@ -103,7 +103,7 @@ Physijs.scripts.ammo = 'ammo.js';
 
 THREE.PlayerControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 
-//var keyboard = new KeyboardState();
+var view = new View(viewMode, solarSystemData);
 
 var webglEl = document.getElementById('webgl');
 
@@ -156,7 +156,6 @@ function initWorld() {
 
 	socket = io.connect('http://localhost:8080');
 
-	view = new View(viewMode, solarSystemData);
 	scene.add(view.InitializeWorld());
 
 	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
