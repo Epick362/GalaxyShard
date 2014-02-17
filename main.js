@@ -186,7 +186,7 @@ function initWorld() {
 			shipContainer.add(object3d)
 		});
 
-		bounding.position.set(data.x, data.y, data.z);
+		bounding.position.set(data.position.x, data.position.y, data.position.z);
 		bounding.add(shipContainer);
 		bounding.name = player.name+"\'s Ship";
 		
@@ -194,6 +194,11 @@ function initWorld() {
 		bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
 		socket.emit('fetch.players');
 	});	
+
+	setInterval(function(){
+		socket.emit('player.move', {name: player.name, position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z}});
+		console.log("sync position");
+	}, 3000);
 
 	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 	controls.minDistance = 0.1;
