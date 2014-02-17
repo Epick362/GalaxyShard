@@ -7,16 +7,16 @@ var solarSystemData = {
 		{
 			name : "mercury",
 			radius : 4879,
-			rotation : 36,
-			distance : 57.9 / 5,
+			rotation : 12,
+			distance : 57.9,
 			revolution : 2.2,
 			orbitColor : 0x444444
 		},
 		{
 			name : "venus",
 			radius : 12104,
-			rotation : 6,
-			distance : 108.2 / 5,
+			rotation : 8,
+			distance : 108.2,
 			revolution : 1.8,
 			orbitColor : 0x555555
 		},
@@ -24,7 +24,7 @@ var solarSystemData = {
 			name : "earth",
 			radius : 12756,
 			rotation : 6,
-			distance : 149.6 / 5,
+			distance : 149.6,
 			revolution : 2,
 			clouds : true,
 			orbitColor: 0xFF4400,
@@ -39,40 +39,40 @@ var solarSystemData = {
 		{
 			name : "mars",
 			radius : 6792,
-			rotation : -26,
-			distance : 227.9 / 5,
+			rotation : -3,
+			distance : 227.9,
 			revolution : 2.5,
 			orbitColor : 0x777777
 		},
 		{
 			name : "jupiter",
 			radius : 142984,
-			rotation : 6,
-			distance : 778.6 / 5,
+			rotation : 2,
+			distance : 778.6,
 			revolution : 1.3,
 			orbitColor : 0x999999
 		},
 		{
 			name : "saturn",
 			radius : 120536,
-			rotation : 6,
-			distance : 1433.5 / 5,
+			rotation : 2,
+			distance : 1433.5,
 			revolution : 1.4,
 			orbitColor : 0x999999
 		},
 		{
 			name : "uranus",
 			radius : 51118,
-			rotation : 6,
-			distance : 2872.5 / 5,
+			rotation : 2,
+			distance : 2872.5,
 			revolution : 1,
 			orbitColor : 0x999999
 		},
 		{
 			name : "neptune",
 			radius : 49528,
-			rotation : 6,
-			distance : 4495.1 / 5,
+			rotation : 1,
+			distance : 4495.1,
 			revolution : 0.8,
 			orbitColor : 0x999999
 		}
@@ -80,8 +80,8 @@ var solarSystemData = {
 	stars: [
 		{
 			name : "sun",
-			radius : 7.35144e8,
-			spectral : 1
+			radius : 7.35144e9,
+			spectral : 0.95
 		}
 	],
 	env: "env05"

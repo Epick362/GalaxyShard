@@ -81,7 +81,7 @@ PlanetBody = function(data, planet) {
 	};
 
 	this.createPlanet = function() {
-		this.planet.radius = KMToLY(this.planet.radius) * 6;
+		this.planet.radius = KMToLY(this.planet.radius);
 
 		planetObject = this.makePlanetObject();
 		planetObject.name = this.planet.name+" sphere";

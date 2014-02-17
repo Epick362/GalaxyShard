@@ -1,5 +1,5 @@
 function KMToLY( kilometers ){
-	return kilometers * 1.05702341 * Math.pow(10,-5);
+	return kilometers * 1.05702341 * Math.pow(10,-4);
 }
 
 function LYToKM( LY ) {
