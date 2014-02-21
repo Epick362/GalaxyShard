@@ -161,7 +161,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		} else if (this.turning) {
 			this.anchor.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 			this.turning = false;
-		}
+		} 
 
 		// set the speed
 		var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
