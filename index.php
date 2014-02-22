@@ -7,6 +7,9 @@
 		<link rel="stylesheet" type="text/css" href="website/css/bootstrap.min.css" />
 		<link rel="stylesheet" type="text/css" href="website/css/carousel.css" />
 		<link rel="stylesheet" type="text/css" href="website/css/custom.css" />
+
+		<link rel="icon" href="website/images/favicon.png" type="image/png" />
+		<link rel="shortcut icon" href="/favicon.ico" />		
 	</head>
 	<body>
 		<div class="navbar-wrapper">
@@ -21,7 +24,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				  </button>
-				  <a class="navbar-brand" href="#">GalaxyShard</a>
+				  <a class="navbar-brand" href="#"><img src="website/images/GalaxyShard.png" width="8" height="16" /></a>
 				</div>
 				<div class="navbar-collapse collapse">
 				  <ul class="nav navbar-nav">
@@ -62,66 +65,10 @@
 
 		<div class="container page">
 
-		  <!-- Three columns of text below the carousel -->
-		  <div class="row">
-			<div class="col-lg-4">
-			  <img class="img-circle" data-src="holder.js/140x140" alt="Generic placeholder image">
-			  <h2>Heading</h2>
-			  <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-			  <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-			</div><!-- /.col-lg-4 -->
-			<div class="col-lg-4">
-			  <img class="img-circle" data-src="holder.js/140x140" alt="Generic placeholder image">
-			  <h2>Heading</h2>
-			  <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-			  <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-			</div><!-- /.col-lg-4 -->
-			<div class="col-lg-4">
-			  <img class="img-circle" data-src="holder.js/140x140" alt="Generic placeholder image">
-			  <h2>Heading</h2>
-			  <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-			  <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-			</div><!-- /.col-lg-4 -->
-		  </div><!-- /.row -->
-
-
-		  <!-- START THE FEATURETTES -->
-
-		  <hr class="featurette-divider">
-
-		  <div class="row featurette">
-			<div class="col-md-7">
-			  <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
-			  <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-			</div>
-			<div class="col-md-5">
-			  <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-			</div>
-		  </div>
-
-		  <hr class="featurette-divider">
-
-		  <div class="row featurette">
-			<div class="col-md-5">
-			  <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-			</div>
-			<div class="col-md-7">
-			  <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-			  <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-			</div>
-		  </div>
-
-		  <hr class="featurette-divider">
-
-		  <div class="row featurette">
-			<div class="col-md-7">
-			  <h2 class="featurette-heading">And lastly, this one. <span class="text-muted">Checkmate.</span></h2>
-			  <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-			</div>
-			<div class="col-md-5">
-			  <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
-			</div>
-		  </div>
+		<center>
+			<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/FZPCiqBLPM8?controls=0" allowfullscreen frameborder="0">
+			</iframe>
+		</center>
 
 		  <hr class="featurette-divider">
 
