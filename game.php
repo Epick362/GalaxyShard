@@ -4,8 +4,6 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>GalaxyShard</title>
-	    <link rel="stylesheet" type="text/css" href="website/css/bootstrap.min.css" />
-	    <link rel="stylesheet" type="text/css" href="website/css/bootstrap-theme.min.css" />
 		<style>
 			body { margin: 0; overflow: hidden; background-color: #000; }
 			.webgl-error { font: 15px/30px monospace; text-align: center; color: #fff; margin: 50px; }
@@ -25,6 +23,7 @@
 		<script src="game/js/spacehelpers.js"></script>		
 		<script src="game/js/Detector.js"></script>		
 		<script src="game/js/PlayerControls.js"></script>
+		<script src="game/js/ShaderParticles.min.js"></script>
 		<script src="game/js/shaderlist.js"></script>  
 		<script src="game/js/lensflare.js"></script>	
 

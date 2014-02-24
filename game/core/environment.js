@@ -10,7 +10,7 @@ Environment = function(data) {
 		var starfield = new THREE.Mesh(
 			new THREE.SphereGeometry(100000, 32, 32), 
 			new THREE.MeshBasicMaterial({
-				map:  THREE.ImageUtils.loadTexture('game/images/enviroment/'+this.data.env+'.jpg'), 
+				map:  THREE.ImageUtils.loadTexture('game/images/environment/'+this.data.env+'.jpg'), 
 				side: THREE.BackSide
 			})
 		);

@@ -1,136 +1,153 @@
-<!doctype html>
+<!doctype html lang="en">
 <html>
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<title>GalaxyShard</title>
-		<link rel="stylesheet" type="text/css" href="website/css/bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="website/css/carousel.css" />
-		<link rel="stylesheet" type="text/css" href="website/css/custom.css" />
-
+		<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.4.2/pure.css">
+		<link rel="stylesheet" type="text/css" href="website/css/main-grid.css" />
+		<link rel="stylesheet" type="text/css" href="website/css/styles.css" />
+		<link rel="stylesheet" type="text/css" href="website/css/font-awesome.min.css" />
 		<link rel="icon" href="website/images/favicon.png" type="image/png" />
 		<link rel="shortcut icon" href="/favicon.ico" />		
 	</head>
 	<body>
-		<div class="navbar-wrapper">
-		  <div class="container">
+		<div class="header">
+			<div class="home-menu pure-menu pure-menu-open pure-menu-horizontal pure-menu-fixed">
+				<a class="pure-menu-heading" href=""><img src="website/images/galaxyshard.png" width="11" height="25"></a>
 
-			<div class="navbar navbar-inverse navbar-static-top" role="navigation">
-			  <div class="container">
-				<div class="navbar-header">
-				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				  </button>
-				  <a class="navbar-brand" href="#"><img src="website/images/GalaxyShard.png" width="8" height="16" /></a>
-				</div>
-				<div class="navbar-collapse collapse">
-				  <ul class="nav navbar-nav">
-					<li class="active"><a href="#">Home</a></li>
+				<ul>
+					<li class="pure-menu-selected"><a href="#">Home</a></li>
 					<li><a href="game.php">Game</a></li>
-					<li><a href="#contact">Contact</a></li>
-					<li class="dropdown">
-					  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-					  <ul class="dropdown-menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li class="divider"></li>
-						<li class="dropdown-header">Nav header</li>
-						<li><a href="#">Separated link</a></li>
-						<li><a href="#">One more separated link</a></li>
-					  </ul>
-					</li>
-				  </ul>
-				</div>
-			  </div>
-			</div>
-
-		  </div>
-		</div>
-
-
-		<div class="image-promo">
-			<div class="container">
-				<div class="content">
-					The best browser MMORPG game in the universe <br /><small>- Albert Einstein</small>			
-				</div>
+					<li><a href="#">Sign Up</a></li>
+				</ul>
 			</div>
 		</div>
-		<!-- Marketing messaging and featurettes
-		================================================== -->
-		<!-- Wrap the rest of the page in another container to center all the content. -->
 
-		<div class="container page">
+		<div class="splash-container">
+			<div class="splash">
+				<img data-src="holder.js/640x320">
+				<p class="splash-subhead">
+					Explore new worlds in GalaxyShard spaceMMORPG!
+				</p>
+				<p>
+					<a href="game.php" class="pure-button pure-button-primary">Get Started</a>
+				</p>
+			</div>
+		</div>
 
-		<center>
-			<iframe class="youtube-player" type="text/html" width="640" height="385" src="http://www.youtube.com/embed/FZPCiqBLPM8?controls=0" allowfullscreen frameborder="0">
-			</iframe>
-		</center>
+		<div class="content-wrapper">
+			<div class="content">
+				<h2 class="content-head is-center">Excepteur sint occaecat cupidatat.</h2>
 
-		  <hr class="featurette-divider">
+				<div class="pure-g">
+					<div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
 
-		  <!-- /END THE FEATURETTES -->
+						<h3 class="content-subhead">
+							<i class="fa fa-rocket"></i>
+							Get Started Quickly
+						</h3>
+						<p>
+							Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+						</p>
+					</div>
+					<div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
+						<h3 class="content-subhead">
+							<i class="fa fa-mobile"></i>
+							Responsive Layouts
+						</h3>
+						<p>
+							Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+						</p>
+					</div>
+					<div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
+						<h3 class="content-subhead">
+							<i class="fa fa-th-large"></i>
+							Modular
+						</h3>
+						<p>
+							Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+						</p>
+					</div>
+					<div class="l-box pure-u-1 pure-u-med-1-2 pure-u-lrg-1-4">
+						<h3 class="content-subhead">
+							<i class="fa fa-check-square-o"></i>
+							Plays Nice
+						</h3>
+						<p>
+							Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="ribbon l-box-lrg pure-g">
+				<div class="l-box-lrg is-center pure-u-1 pure-u-med-1-2 pure-u-lrg-2-5">
+					<img data-src="holder.js/300x150">
+				</div>
+				<div class="pure-u-1 pure-u-med-1-2 pure-u-lrg-3-5">
+
+					<h2 class="content-head content-head-ribbon">Laboris nisi ut aliquip.</h2>
+
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat. Duis aute irure dolor.
+					</p>
+				</div>
+			</div>
+
+			<div class="content">
+				<h2 class="content-head is-center">Dolore magna aliqua. Uis aute irure.</h2>
+
+				<div class="pure-g">
+					<div class="l-box-lrg pure-u-1 pure-u-med-2-5">
+						<form class="pure-form pure-form-stacked">
+							<fieldset>
+
+								<label for="email">Your Name</label>
+								<input id="email" type="text" placeholder="Your Name">
 
 
-		  <!-- FOOTER -->
-		  <footer>
-			<p class="pull-right"><a href="#">Back to top</a></p>
-			<p>&copy; 2014 Stardream, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
-		  </footer>
+								<label for="email">Your Email</label>
+								<input id="email" type="email" placeholder="Your Email">
 
-		</div><!-- /.container -->
+								<label for="password">Your Password</label>
+								<input id="password" type="password" placeholder="Your Password">
+
+								<button type="submit" class="pure-button">Sign Up</button>
+							</fieldset>
+						</form>
+					</div>
+
+					<div class="l-box-lrg pure-u-1 pure-u-med-3-5">
+						<h4>Contact Us</h4>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat.
+						</p>
+
+						<h4>More Information</h4>
+						<p>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua.
+						</p>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="footer l-box is-center">
+				Copyright &copy; 2014 Stardream LLC
+			</div>
+
+		</div>
 
 		
 		<script src="website/js/jquery-2.0.3.min.js"></script>
-		<script src="website/js/bootstrap.min.js"></script>
 		<script src="website/js/holder.js"></script>
-		<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				b=parseFloat(-150);// Initial value for the first background (bk 0)
-				var scrollTop = $(window).scrollTop();
-				var scroll_actually= new Array();// Identifies the X and Y values for the background
-			 
-				$(window).scroll(function(){//This is not the cleanest way to do this, I'm just keeping it short.
-					if(scrollTop>$(this).scrollTop()) // Scroll up
-					{
-						if (getScrollTop()<=400 && getScrollTop()>=0)// Identifies the position for the first background when a scroll event occurs
-						{
-								b=b+20;
-								$('.image-promo').css('backgroundPosition', '0 '+b+'px');
-						}
-					}
-					else
-					{// Scroll down
-						if (getScrollTop()>=0 && getScrollTop()<=400)
-						{
-							  b=b-20;
-							  $('.image-promo').css('backgroundPosition', '0 '+b+'px');
-						}
-					}
-					if (getScrollTop()==0)// Adjusts the positions values and resets them to zero during a scroll up event
-					{
-						$('.image-promo').css('backgroundPosition', '0 -150px');
-					}
-				  scrollTop = $(this).scrollTop();
-				});
-			});
-
-			function getScrollTop(){ //  Verifies the total sum in pixels of the whole page
-			 
-				if(typeof pageYOffset!= 'undefined'){
-					// Most browsers
-					return pageYOffset;
-				}
-				else{
-					var B= document.body; //IE 'quirks'
-					var D= document.documentElement; //IE with doctype
-					D= (D.clientHeight)? D: B;
-					return D.scrollTop;
-				}
-			}
-		</script>
 	</body>
 </html>
