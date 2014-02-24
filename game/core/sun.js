@@ -248,7 +248,7 @@ function makeSun( options ){
 
 	//	2D overlay elements	
 	gyro = new THREE.Gyroscope();
-	//sun.add( gyro );	
+	sun.add( gyro );	
 		sun.gyro = gyro;
 
     // console.time("make sun lensflare");
