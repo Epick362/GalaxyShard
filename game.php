@@ -23,7 +23,7 @@
 		<script src="game/js/spacehelpers.js"></script>		
 		<script src="game/js/Detector.js"></script>		
 		<script src="game/js/PlayerControls.js"></script>
-		<script src="game/js/ShaderParticles.js"></script>
+		<script src="game/js/ShaderParticles.min.js"></script>
 		<script src="game/js/shaderlist.js"></script>  
 		<script src="game/js/lensflare.js"></script>	
 
