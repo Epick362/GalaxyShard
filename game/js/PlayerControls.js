@@ -102,7 +102,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	    position: new THREE.Vector3(0, 0, 0),
 	    acceleration: new THREE.Vector3(0, 0, 0),
 	    velocity: new THREE.Vector3(0, 0, 0),
-	    particlesPerSecond: 100,
+	    particlesPerSecond: 10,
 	    sizeStart: 0.1,
 	    sizeEnd: 0.1,
 	    opacityStart: 1,
@@ -285,8 +285,6 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 
 		this.particleEmitter.position = new THREE.Vector3(this.anchor.position.x, this.anchor.position.y, this.anchor.position.z);
 		this.particleEmitter.velocity = new THREE.Vector3(0, 0, -velocity/2).applyMatrix4(rotation_matrix);
-		this.particleEmitter.setStartOpacity(velocity / this.maxSpeed);
-		console.log(this.particleEmitter.opacityStart);
 
    		this.particleGroup.tick( delta );
 	};
