@@ -87,35 +87,35 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	};
 
 	// Create a particle group to add the emitter to.
-	var particleGroup = new SPE.Group({
+	this.particleGroup = new SPE.Group({
 	    // Give the particles in this group a texture
 	    texture: THREE.ImageUtils.loadTexture('game/images/p_1.png'),
 
 	    // How long should the particles live for? Measured in seconds.
-	    maxAge: 3
+	    maxAge: 5
 	});
 
 	// Create a single emitter
-	var particleEmitter = new SPE.Emitter({
+	this.particleEmitter = new SPE.Emitter({
 	    type: 'cube',
+	    particleCount: 2000,
 	    position: new THREE.Vector3(0, 0, 0),
 	    acceleration: new THREE.Vector3(0, 0, 0),
 	    velocity: new THREE.Vector3(0, 0, 0),
-	    angleStartSpread: Math.PI,
-	    particlesPerSecond: 1000,
-	    sizeStart: 0.3,
+	    particlesPerSecond: 10,
+	    sizeStart: 0.1,
 	    sizeEnd: 0.1,
-	    opacityStart: .8,
+	    opacityStart: 1,
 	    opacityEnd: 0,
 	    colorStart: new THREE.Color('blue'),
 	    colorEnd: new THREE.Color('white')
 	});
 
 	// Add the emitter to the group.
-	particleGroup.addEmitter( particleEmitter );
+	this.particleGroup.addEmitter( this.particleEmitter );
 
 	// Add the particle group to the scene so it can be drawn.
-	scene.add( particleGroup.mesh ); // Where `scene` is an instance of `THREE.Scene`.
+	scene.add( this.particleGroup.mesh ); // Where `scene` is an instance of `THREE.Scene`.
 
 	this.rotateLeft = function (angle) {
 		thetaDelta -= angle;
@@ -283,15 +283,10 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			lastPosition.copy(this.camera.position);
 		}
 
-		particleEmitter.position = new THREE.Vector3(this.anchor.position.x, this.anchor.position.y, this.anchor.position.z);
-		particleEmitter.velocity = new THREE.Vector3(0, 0, -velocity/2).applyMatrix4(rotation_matrix);
-		if(!this.moving) {
-			particleEmitter.alive = false;
-		}else{
-			particleEmitter.alive = true;
-		}
+		this.particleEmitter.position = new THREE.Vector3(this.anchor.position.x, this.anchor.position.y, this.anchor.position.z);
+		this.particleEmitter.velocity = new THREE.Vector3(0, 0, -velocity/2).applyMatrix4(rotation_matrix);
 
-   		particleGroup.tick( delta );
+   		this.particleGroup.tick( delta );
 	};
 
 	function shortestArc(a, b)
