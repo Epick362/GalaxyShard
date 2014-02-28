@@ -337,7 +337,8 @@ function makeSun( options ){
 
 	sun.setSpectralIndex( spectral );
 
-	sun.update = function(){
+	sun.update = function(camera){
+		this.camera = camera;
 		this.sunUniforms.time.value = shaderTiming;
 		this.haloUniforms.time.value = shaderTiming;
 		this.solarflareUniforms.time.value = shaderTiming;
@@ -345,6 +346,8 @@ function makeSun( options ){
 		if( this.gyro.getObjectByName('lensflare') === undefined ){
 			this.gyro.add( this.lensflare );			
 		}
+
+		this.gyro.lookAt(this.camera.position);
 	}
 
 	//	test controls

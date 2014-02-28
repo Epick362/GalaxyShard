@@ -42,8 +42,9 @@ Initialize = function(mode, data) {
 };
 Initialize.prototype = new View();
 
-Update = function(mode) {
+Update = function(mode, camera) {
 	this.mode = mode;
+	this.camera = camera;
 	this.init = function() {
 		switch(this.mode) {
 			case 0: return this.Orbital();
@@ -62,7 +63,7 @@ Update = function(mode) {
 	};
 
 	this.System = function() {
-		env.update()
+		env.update(this.camera)
 	};
 
 	this.Galaxy = function() {
@@ -77,8 +78,8 @@ View.prototype.InitializeWorld = function() {
 	return initialize.init();
 };
 
-View.prototype.UpdateWorld = function() {
-	var update = new Update(this.mode);
+View.prototype.UpdateWorld = function(camera) {
+	var update = new Update(this.mode, camera);
 	return update.init();
 };
 

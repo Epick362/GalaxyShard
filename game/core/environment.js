@@ -100,11 +100,12 @@ Environment = function(data) {
 		return solarsystem;
 	};
 
-	this.update = function(playerPosition) {
+	this.update = function(camera) {
+		this.camera = camera;
 		for (var i in this.planets) {
 			this.planets[i].updatePlanet();
 		};
 
-		this.star.update();
+		this.star.update(this.camera);
 	};
 };

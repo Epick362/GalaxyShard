@@ -193,11 +193,10 @@ function initWorld() {
 
 	setInterval(function(){
 		socket.emit('player.move', {
-						name: player.name, 
-						position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z},
-						rotation: {x: bounding.rotation.x, y: bounding.rotation.y, z: bounding.rotation.z}
-					});
-		console.log("sync player position");
+			name: player.name, 
+			position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z},
+			rotation: {x: bounding.rotation.x, y: bounding.rotation.y, z: bounding.rotation.z}
+		});
 	}, 2500);
 
 	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
@@ -225,7 +224,7 @@ function render() {
     var delta = clock.getDelta();
     if (controls) controls.update(delta);
 
-    view.UpdateWorld();
+    view.UpdateWorld(camera);
 
     requestAnimationFrame(render);
 	renderer.render(scene, camera);
