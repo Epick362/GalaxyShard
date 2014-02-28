@@ -20,10 +20,25 @@ io.sockets.on('connection', function (socket) {
 	//hash of players active
 	
 	socket.on('connect', function(data) {
-		users.findOne({name: data.name}).on('success', function (ship) {
-			console.log('Connected:' +data.name);
-			players[data.name] = new Player(data.name, ship);
-			socket.emit('connected', ship);			
+		users.findOne({name: data.name}).success( function (ship) {
+			if(ship) {
+				console.log('Connected: '+data.name);
+				players[data.name] = new Player(data.name, ship);
+				socket.emit('connected', ship);	
+			}else{
+				var p = {
+					position: {x: 15, y: 0, z: 15},
+					rotation: {x: 0, y: 0, z: 0},
+					ship: "Shuttle01"
+				};
+				users.insert({name: data.name, position: p.position, rotation: p.rotation, ship: p.ship}, function (err, doc) {
+					if(err) throw err;
+
+					console.log('User created: '+data.name);
+					players[data.name] = new Player(data.name, p);
+					socket.emit('connected', p);	
+				});
+			}		
 		});
 	});
 	
