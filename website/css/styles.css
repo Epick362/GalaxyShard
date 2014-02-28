@@ -156,6 +156,11 @@ a.pure-button-primary {
     position: fixed !important;
 }
 
+.splash-image {
+    border: 2px solid #FFF;
+    border-radius: 6px;
+}
+
 .splash {
     /* absolute center .splash within .splash-container */
     width: 80%;

@@ -26,12 +26,12 @@
 
 		<div class="splash-container">
 			<div class="splash">
-				<img data-src="holder.js/640x320">
+				<img class="splash-image" src="website/images/promo@2x.jpg" width="640" height="320" />
 				<p class="splash-subhead">
 					Explore new worlds in GalaxyShard spaceMMORPG!
 				</p>
 				<p>
-					<a href="game.php" class="pure-button pure-button-primary">Get Started</a>
+					<a href="game.php" class="pure-button pure-button-primary">Play</a>
 				</p>
 			</div>
 		</div>
@@ -83,7 +83,7 @@
 
 			<div class="ribbon l-box-lrg pure-g">
 				<div class="l-box-lrg is-center pure-u-1 pure-u-med-1-2 pure-u-lrg-2-5">
-					<img data-src="holder.js/300x150">
+					<img src="website/images/galaxyshard.png" height="200" width="110" />
 				</div>
 				<div class="pure-u-1 pure-u-med-1-2 pure-u-lrg-3-5">
 
