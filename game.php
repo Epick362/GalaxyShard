@@ -12,6 +12,7 @@
 	</head>
 	<body onload="start()" oncontextmenu="return false">
 		<div id="webgl"></div>
+		<div id="tooltip"></div>
 		<script src="website/js/jquery-2.0.3.min.js"></script>
 		<script src="game/js/three.min.js"></script>
 		<script src="game/js/physi.js"></script>
@@ -23,6 +24,7 @@
 		<script src="game/js/spacehelpers.js"></script>		
 		<script src="game/js/Detector.js"></script>		
 		<script src="game/js/PlayerControls.js"></script>
+		<script src="game/js/MouseTooltip.js"></script>
 		<script src="game/js/ShaderParticles.js"></script>
 		<script src="game/js/shaderlist.js"></script>  
 		<script src="game/js/lensflare.js"></script>	

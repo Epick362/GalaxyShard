@@ -101,6 +101,7 @@ THREE.PlayerControls.prototype = Object.create(THREE.EventDispatcher.prototype);
 var view = new View(viewMode, solarSystemData);
 
 var webglEl = document.getElementById('webgl');
+var tooltipEl = document.getElementById('tooltip');
 
 function start(e) {
 	if (!Detector.webgl) {
@@ -153,6 +154,11 @@ function initWorld() {
 
 	scene.add(view.InitializeWorld());
 
+	tooltip = new THREE.MouseTooltip({Scene: scene, Container: tooltipEl});
+	tooltip.setContent("LOLOLOLO");
+	tooltip.show();
+	console.log(tooltip.isVisible());
+	console.log(scene);
 
 	player = {};
 	player.name = prompt('enter name');
