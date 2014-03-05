@@ -173,7 +173,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			//back
 		} else if (this.moving) {
 			this.player.rotation.set(0, 0, 0);
-			velocity -= velocity/1000;
+			velocity -= velocity/100;
 		}
 
 		if(velocity == 0) {
@@ -182,19 +182,19 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 
 		//turn
 		if (key_state.indexOf(this.keys.LEFT) > -1 && key_state.indexOf(this.keys.RIGHT) < 0) {
-			if(this.rotationVector.y < Math.PI) {
+			if(this.rotationVector.y < Math.PI/2) {
 				this.rotationVector.y += Math.PI/90;
 			}
 			this.turning = true;
 			//turning
 		} else if (key_state.indexOf(this.keys.RIGHT) > -1) {
-			if(this.rotationVector.y > -Math.PI) {
+			if(this.rotationVector.y > -Math.PI/2) {
 				this.rotationVector.y -= Math.PI/90;
 			}
 			this.turning = true;
 			//turning
 		} else if (this.turning && this.rotationVector.y != 0) {
-			this.rotationVector.y -= this.rotationVector.y / 10;
+			this.rotationVector.y -= this.rotationVector.y / 45;
 		} else if (this.turning) {
 			this.turning = false;
 		}
