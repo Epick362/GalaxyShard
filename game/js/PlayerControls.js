@@ -51,7 +51,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	this.maxSpeed = 2;
 	this.acceleration = 0.01;
 
-	this.rotationVelocity = new THREE.Vector3(0, 0, 0);
+	this.rotationVector = new THREE.Vector3(0, 0, 0);
 
 	// internals
 	var scope = this;
@@ -182,17 +182,25 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 
 		//turn
 		if (key_state.indexOf(this.keys.LEFT) > -1 && key_state.indexOf(this.keys.RIGHT) < 0) {
-			this.anchor.setAngularVelocity(new THREE.Vector3(0, 0.8, 0));
+			if(this.rotationVector.y < Math.PI) {
+				this.rotationVector.y += Math.PI/90;
+			}
 			this.turning = true;
 			//turning
 		} else if (key_state.indexOf(this.keys.RIGHT) > -1) {
-			this.anchor.setAngularVelocity(new THREE.Vector3(0, -0.8, 0));
+			if(this.rotationVector.y > -Math.PI) {
+				this.rotationVector.y -= Math.PI/90;
+			}
 			this.turning = true;
 			//turning
+		} else if (this.turning && this.rotationVector.y != 0) {
+			this.rotationVector.y -= this.rotationVector.y / 10;
 		} else if (this.turning) {
-			this.anchor.setAngularVelocity(new THREE.Vector3(0, 0, 0));
 			this.turning = false;
-		} 
+		}
+
+		// set rotation
+		this.anchor.setAngularVelocity(this.rotationVector);
 
 		// set the speed
 		var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
@@ -284,7 +292,8 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			lastPosition.copy(this.camera.position);
 		}
 
-		this.particleEmitter.position.copy(this.anchor.position);
+		var engineOffset = new THREE.Vector3(0, 0, -0.03).applyMatrix4(rotation_matrix);
+		this.particleEmitter.position.copy(this.anchor.position).add(engineOffset);
 		this.particleEmitter.velocity = new THREE.Vector3(0, 0, velocity/4).applyMatrix4(rotation_matrix);
 
    		this.particleGroup.tick( delta );
