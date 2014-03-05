@@ -2,83 +2,6 @@
 var width  = window.innerWidth,
 	height = window.innerHeight;
 
-var solarSystemData = {
-	planets : [
-		{
-			name : "mercury",
-			radius : 4879,
-			rotation : 12,
-			distance : 57.9,
-			revolution : 2.2
-		},
-		{
-			name : "venus",
-			radius : 12104,
-			rotation : 8,
-			distance : 108.2,
-			revolution : 1.8
-		},
-		{
-			name : "earth",
-			radius : 12756,
-			rotation : 6,
-			distance : 149.6,
-			revolution : 2,
-			clouds : true,
-			orbit : {
-				rotation : {
-					x: 0,
-					y: 0,
-					z: 0
-				}
-			}
-		},
-		{
-			name : "mars",
-			radius : 6792,
-			rotation : -3,
-			distance : 227.9,
-			revolution : 2.5
-		},
-		{
-			name : "jupiter",
-			radius : 142984,
-			rotation : 2,
-			distance : 778.6,
-			revolution : 1.3
-		},
-		{
-			name : "saturn",
-			radius : 120536,
-			rotation : 2,
-			distance : 1433.5,
-			revolution : 1.4
-		},
-		{
-			name : "uranus",
-			radius : 51118,
-			rotation : 2,
-			distance : 2872.5,
-			revolution : 1
-		},
-		{
-			name : "neptune",
-			radius : 49528,
-			rotation : 1,
-			distance : 4495.1,
-			revolution : 0.8
-		}
-	],
-	stars: [
-		{
-			name : "sun",
-			radius : 7.35144e9,
-			spectral : 0.95
-		}
-	],
-	env: "env05"
-};
-
 var viewMode = 1; // 0 = Orbital / 1 = System / 2 = Galaxy 
 
 var gradientCanvas;
@@ -97,8 +20,6 @@ Physijs.scripts.worker = 'game/js/physijs_worker.js';
 Physijs.scripts.ammo = 'ammo.js';
 
 THREE.PlayerControls.prototype = Object.create(THREE.EventDispatcher.prototype);
-
-var view = new View(viewMode, solarSystemData);
 
 var webglEl = document.getElementById('webgl');
 
@@ -151,9 +72,6 @@ function initWorld() {
 
 	socket = io.connect('http://localhost:8080');
 
-	scene.add(view.InitializeWorld());
-
-
 	player = {};
 	player.name = prompt('enter name');
 
@@ -175,32 +93,38 @@ function initWorld() {
 
 	socket.emit('connect', {'name': player.name});
 	socket.on('connected', function(data) {
-		ship = new Ship(data, player.name, data.ship);
+		view = new View(viewMode, data.system);
+		scene.add(view.InitializeWorld());
+
+		ship = new Ship(data.ship, player.name, data.ship.ship);
 
 		ship.loadModel(function(object3d) {
 			shipContainer.add(object3d)
 		});
 
-		bounding.position.set(data.position.x, data.position.y, data.position.z);
-		bounding.rotation.set(data.rotation.x, data.rotation.y, data.rotation.z);
+		bounding.position.set(data.ship.position.x, data.ship.position.y, data.ship.position.z);
+		bounding.rotation.set(data.ship.rotation.x, data.ship.rotation.y, data.ship.rotation.z);
 		bounding.add(shipContainer);
 		bounding.name = player.name+"\'s Ship";
 		
 		scene.add(bounding)
 		bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
 		socket.emit('fetch.players');
+
+		setInterval(function(){
+			socket.emit('player.move', {
+				name: player.name, 
+				position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z},
+				rotation: {x: bounding.rotation.x, y: bounding.rotation.y, z: bounding.rotation.z}
+			});
+		}, 2500);
+
+		controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
+		controls.minDistance = 0.1;
+		
+	    scene.simulate();
+		render();
 	});	
-
-	setInterval(function(){
-		socket.emit('player.move', {
-			name: player.name, 
-			position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z},
-			rotation: {x: bounding.rotation.x, y: bounding.rotation.y, z: bounding.rotation.z}
-		});
-	}, 2500);
-
-	controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
-	controls.minDistance = 0.1;
 
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
@@ -211,9 +135,6 @@ function initWorld() {
 	webglEl.appendChild(renderer.domElement);
 
 	window.addEventListener('resize', onWindowResize, false );
-	
-    scene.simulate();
-	render();
 }
 
 function render() {

@@ -15,6 +15,7 @@ var players = {};
 // Establish DB connection
 var db = require('monk')('localhost/galaxyshard')
   , users = db.get('ships')
+  , systems = db.get('systems')
 
 io.sockets.on('connection', function (socket) {
 	//hash of players active
@@ -22,14 +23,21 @@ io.sockets.on('connection', function (socket) {
 	socket.on('connect', function(data) {
 		users.findOne({name: data.name}).success( function (ship) {
 			if(ship) {
-				console.log('Connected: '+data.name);
-				players[data.name] = new Player(data.name, ship);
-				socket.emit('connected', ship);	
+				systems.findById(ship.location, function(err, system) {
+					var response = {
+						"ship" : ship,
+						"system" : system
+					};
+					console.log('Connected: '+data.name);
+					players[data.name] = new Player(data.name, ship);
+					socket.emit('connected', response);	
+				});
 			}else{
 				var p = {
 					position: {x: 15, y: 0, z: 15},
 					rotation: {x: 0, y: 0, z: 0},
-					ship: "Shuttle01"
+					ship: "Shuttle01",
+					location: "53167e61a4b8a311ec37216e"
 				};
 				users.insert({name: data.name, position: p.position, rotation: p.rotation, ship: p.ship}, function (err, doc) {
 					if(err) throw err;
