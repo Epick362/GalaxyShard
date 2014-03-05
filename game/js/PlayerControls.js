@@ -177,7 +177,10 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		}
 
 		if(velocity == 0) {
-			this.moving = false;	
+			this.moving = false;
+			this.particleEmitter.disable();
+		}else{
+			this.particleEmitter.enable();
 		}
 
 		//turn
