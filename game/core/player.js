@@ -2,9 +2,9 @@ Player = function(name, data) {
 	this.name = name;
 	this.data = data;
 
-	shipContainer = new THREE.Object3D();
+	var shipContainer = new THREE.Object3D();
 
-	bounding = new Physijs.SphereMesh(
+	var bounding = new Physijs.SphereMesh(
 		new THREE.SphereGeometry(.01, 64, 64),
 		Physijs.createMaterial(
 			new THREE.Material({
