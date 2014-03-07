@@ -72,55 +72,16 @@ function initWorld() {
 
 	socket = io.connect('http://localhost:8080');
 
-	player = {};
-	player.name = prompt('enter name');
+	playerName = prompt('Enter name');
 
-	// Actual Ship
-	shipContainer = new THREE.Object3D();
-	//ship.position.set(0, 3, 0);
-
-	bounding = new Physijs.SphereMesh(
-		new THREE.SphereGeometry(.01, 64, 64),
-		Physijs.createMaterial(
-			new THREE.Material({
-				opacity: 0
-			}),
-			1.0, // high friction
-			0.0 // low restitution
-		),
-		0.1
-	);
-
-	socket.emit('connect', {'name': player.name});
+	socket.emit('connect', {'name': playerName});
 	socket.on('connected', function(data) {
 		view = new View(viewMode, data.system);
 		scene.add(view.InitializeWorld());
 
-		ship = new Ship(data.ship, player.name, data.ship.ship);
-
-		ship.loadModel(function(object3d) {
-			shipContainer.add(object3d)
-		});
-
-		bounding.position.set(data.ship.position.x, data.ship.position.y, data.ship.position.z);
-		bounding.rotation.set(data.ship.rotation.x, data.ship.rotation.y, data.ship.rotation.z);
-		bounding.add(shipContainer);
-		bounding.name = player.name+"\'s Ship";
-		
-		scene.add(bounding)
-		bounding.setAngularFactor(new THREE.Vector3(0, 0, 0));
-		socket.emit('fetch.players');
-
-		setInterval(function(){
-			socket.emit('player.move', {
-				name: player.name, 
-				position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z},
-				rotation: {x: bounding.rotation.x, y: bounding.rotation.y, z: bounding.rotation.z}
-			});
-		}, 2500);
-
-		controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
-		controls.minDistance = 0.1;
+		player = new Player(playerName, data.ship);
+		player.createShip(scene, camera, renderer);
+		scene.add(player.getShip());
 		
 	    scene.simulate();
 		render();
@@ -143,8 +104,8 @@ function render() {
 	shaderTiming = (Date.now() - startTime )/ 1000;
 
     var delta = clock.getDelta();
-    if (controls) controls.update(delta);
 
+    player.update(delta);
     view.UpdateWorld(camera);
 
     requestAnimationFrame(render);

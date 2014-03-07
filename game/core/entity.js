@@ -44,9 +44,10 @@ Entity = function(data) {
 	};
 }
 
-Ship = function(data, name, model) {
+Ship = function(data, name) {
 	this.name = name;
-	this.model = model;
+	this.data = data;
+	this.model = this.data.ship;
 }
 Ship.prototype = new Entity();
 
