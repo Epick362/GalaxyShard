@@ -82,6 +82,10 @@ function initWorld() {
 		player = new Player(playerName, data.ship);
 		player.createShip(scene, camera, renderer);
 		scene.add(player.getShip());
+
+		setInterval(function(){
+			player.syncPlayer();
+		}, 2000);
 		
 	    scene.simulate();
 		render();

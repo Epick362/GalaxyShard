@@ -30,15 +30,11 @@ Player = function(name, data) {
 		
 		socket.emit('fetch.players');
 
-		setInterval(function(){
-			syncPlayer();
-		}, 2000);
-
 		this.controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 		this.controls.minDistance = 0.1;
 	}
 
-	var syncPlayer = function() {
+	this.syncPlayer = function() {
 		socket.emit('player.move', {
 			name: this.name, 
 			position: {x: bounding.position.x, y: bounding.position.y, z: bounding.position.z},

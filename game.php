@@ -8,9 +8,14 @@
 			body { margin: 0; overflow: hidden; background-color: #000; }
 			.webgl-error { font: 15px/30px monospace; text-align: center; color: #fff; margin: 50px; }
 			.webgl-error a { color: #fff; }
+			#interface { position: absolute; }
+			.version { position:relative; top: 20px; left: 20px; background: #FF4400; padding: 5px; opacity: .8; border-radius: 3px;}
 	    </style>
 	</head>
 	<body onload="start()" oncontextmenu="return false">
+		<div id="interface">
+			<div class="version">GalaxyShard v.1</div>
+		</div>
 		<div id="webgl"></div>
 		<script src="website/js/jquery-2.0.3.min.js"></script>
 		<script src="game/js/three.min.js"></script>
