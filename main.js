@@ -80,7 +80,7 @@ function initWorld() {
 		scene.add(view.InitializeWorld());
 
 		player = new Player(playerName, data.ship);
-		player.createShip(scene, camera, renderer);
+		player.createShip(scene, camera, renderer, true);
 		scene.add(player.getShip());
 
 		setInterval(function(){

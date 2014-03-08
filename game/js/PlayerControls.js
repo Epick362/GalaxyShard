@@ -148,6 +148,10 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		scale *= zoomScale;
 	};
 
+	this.getVelocity = function() {
+		return velocity;
+	}
+
 	this.update = function (delta) {
 		if (key_state.indexOf(this.keys.UP) > -1) {
 			if(velocity + this.acceleration < this.maxSpeed) {
@@ -173,7 +177,11 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			//back
 		} else if (this.moving) {
 			this.player.rotation.set(0, 0, 0);
-			velocity -= velocity/100;
+			if(velocity - this.acceleration/30 >= 0) {
+				velocity -= this.acceleration/30;
+			}else{
+				velocity = 0;
+			}
 		}
 
 		if(velocity == 0) {

@@ -2,6 +2,8 @@ Player = function(name, data) {
 	this.name = name;
 	this.data = data;
 
+	this.ui = new UI(this.data);
+
 	var shipContainer = new THREE.Object3D();
 
 	var bounding = new Physijs.SphereMesh(
@@ -28,10 +30,10 @@ Player = function(name, data) {
 		bounding.add(shipContainer);
 		bounding.name = this.name;
 		
-		socket.emit('fetch.players');
-
 		this.controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 		this.controls.minDistance = 0.1;
+
+		socket.emit('fetch.players');
 	}
 
 	this.syncPlayer = function() {
@@ -47,6 +49,9 @@ Player = function(name, data) {
 	}
 
 	this.update = function(delta) {
-		if(this.controls) this.controls.update();
+		if(this.controls) {
+			this.controls.update();
+			this.ui.update({velocity: this.controls.getVelocity()});
+		}
 	}
 };
