@@ -48,8 +48,8 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		JUMP: 32,
 	};
 
-	this.maxSpeed = 2;
-	this.acceleration = 0.01;
+	this.maxSpeed = 12;
+	this.acceleration = 0.02;
 
 	this.rotationVector = new THREE.Vector3(0, 0, 0);
 
@@ -177,8 +177,8 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			//back
 		} else if (this.moving) {
 			this.player.rotation.set(0, 0, 0);
-			if(velocity - this.acceleration/30 >= 0) {
-				velocity -= this.acceleration/30;
+			if(velocity - this.acceleration/10 >= 0) {
+				velocity -= this.acceleration/10;
 			}else{
 				velocity = 0;
 			}

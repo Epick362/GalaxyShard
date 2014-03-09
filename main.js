@@ -84,6 +84,7 @@ function initWorld() {
 		scene.add(player.getShip());
 
 		setInterval(function(){
+			console.log("Synchronize Player Position");
 			player.syncPlayer();
 		}, 2000);
 		
@@ -94,7 +95,8 @@ function initWorld() {
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
 	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.bottom = '0px';	
+	stats.domElement.style.top = '0px';	
+	stats.domElement.style.right = '0px';
 	document.body.appendChild( stats.domElement );	
 
 	webglEl.appendChild(renderer.domElement);

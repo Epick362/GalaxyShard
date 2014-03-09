@@ -8,6 +8,6 @@ UI = function(data) {
 	};
 
 	this.updateSpeed = function() {
-		speedEl.html(this.data.velocity.toFixed(2));
+		speedEl.val(this.data.velocity.toFixed(2) * 100).trigger('change');
 	}
 };
