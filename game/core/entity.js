@@ -83,8 +83,10 @@ PlanetBody = function(data, planet) {
 
 	this.createPlanet = function() {
 		this.planet.radius = KMToLY(this.planet.radius);
+		this.planet.moonObjects = [];
 
-		planetObject = this.makePlanetObject();
+		var planet = this.makePlanetObject();
+		planetObject.add(planet);
 		planetObject.name = this.planet.name+" sphere";
 		planetContainer.add(planetObject)
 		planetContainer.name = this.planet.name;
@@ -111,6 +113,14 @@ PlanetBody = function(data, planet) {
 			}
 		}
 
+		if(typeof this.planet.moons == "object") {
+			for(i in this.planet.moons) {
+				this.planet.moonObjects[i] = new PlanetBody({x: 0, y: 0, z: 0}, this.planet.moons[i]);
+				var moon = this.planet.moonObjects[i].createPlanet();
+				planetObject.add(moon);
+			}
+		}
+
 		return planetContainer;
 	};
 
@@ -120,6 +130,10 @@ PlanetBody = function(data, planet) {
 
 		planetObject.position.set(this.planet.distance * Math.cos(angle), 0, this.planet.distance * Math.sin(angle));
 		planetObject.rotation.y += this.planet.rotation / 10000;
+
+		for(i in this.planet.moonObjects) {
+			this.planet.moonObjects[i].updatePlanet();
+		}
 	};
 }
 PlanetBody.prototype = new Entity();
