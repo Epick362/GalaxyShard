@@ -83,7 +83,7 @@
 
 			<div class="ribbon l-box-lrg pure-g">
 				<div class="l-box-lrg is-center pure-u-1 pure-u-med-1-2 pure-u-lrg-2-5">
-					<img src="website/images/galaxyshard.png" height="200" width="110" />
+					<img src="website/images/Terran Alliance.png" height="200" width="200" />
 				</div>
 				<div class="pure-u-1 pure-u-med-1-2 pure-u-lrg-3-5">
 

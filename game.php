@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>GalaxyShard</title>
+		<title>GalaxyShard - Ingame</title>
 		<style>
 			body { margin: 0; overflow: hidden; background-color: #000; }
 			.webgl-error { font: 15px/30px monospace; text-align: center; color: #fff; margin: 50px; }
@@ -11,15 +11,15 @@
 			.version { position: absolute; color: #FFF; font-family: Arial; top: 10px; left: 10px; background: #FF9045; padding: 5px; border-radius: 6px; }
 			.velocity { position: absolute; color: #FFF; bottom: 10px; left: 50%; margin-left: -95px; background: transparent;}
 	    </style>
+		<link rel="icon" href="website/images/favicon.png" type="image/png" />
+		<link rel="shortcut icon" href="/favicon.ico" />		
 	</head>
 	<body onload="start()" oncontextmenu="return false">
 		<div id="interface">
 			<div class="version">GalaxyShard Alpha</div>
 			<div class="velocity">
-				<input type="text" class="dial" id="currentSpeed" data-thickness=".4" data-angleOffset="-125"
-data-angleArc="250" data-readonly="true" data-min="0" data-max="1200" value="0" data-fgColor="#FF9045"
-data-bgColor="#3D3D3D" />
-			</div></div>
+				<input type="text" class="dial" id="currentSpeed" data-readonly="true" value="0" style="display:none;"/>
+			</div>
 		</div>
 		<div id="webgl"></div>
 		<script src="website/js/jquery-2.0.3.min.js"></script>
@@ -47,10 +47,5 @@ data-bgColor="#3D3D3D" />
 
 		<script src="main.js"></script>  
 		<script type="text/javascript" src="server/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"></script>
-		<script>
-		$(function() {
-		    $(".dial").knob();
-		});
-		</script>
 	</body>
 </html>

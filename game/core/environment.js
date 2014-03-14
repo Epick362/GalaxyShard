@@ -3,8 +3,8 @@ Environment = function(data) {
 	this.planets;
 	this.star;
 
-	this.smallStars = 3000;
-	this.bigStars = 12000;
+	this.smallStars = 300;
+	this.bigStars = 1200;
 
 	this.Skybox = function() {
 		var starfield = new THREE.Mesh(

@@ -81,7 +81,9 @@ PlanetBody = function(data, planet) {
 		}
 	};
 
-	this.createPlanet = function() {
+	this.createPlanet = function(drawOrbit, orbitColor) {
+		this.drawOrbit = typeof drawOrbit !== 'undefined' ? drawOrbit : true;
+		this.orbitColor = typeof orbitColor !== 'undefined' ? orbitColor : 0x444444;
 		this.planet.radius = KMToLY(this.planet.radius);
 		this.planet.moonObjects = [];
 
@@ -91,22 +93,26 @@ PlanetBody = function(data, planet) {
 		planetContainer.add(planetObject)
 		planetContainer.name = this.planet.name;
 
+		console.log(this.planet.name+" "+this.drawOrbit+" "+this.orbitColor);
+
 		if(this.planet.orbit != false) {
-			// Create Orbit Lines
-			var resolution = 400;
-			var amplitude = this.planet.distance;
-			var size = 360 / resolution;
+			if(this.drawOrbit) {
+				// Create Orbit Lines
+				var resolution = 100;
+				var amplitude = this.planet.distance;
+				var size = 360 / resolution;
 
-			var geometry = new THREE.Geometry();
-			var material = new THREE.LineBasicMaterial( { color: 0x666666, opacity: 0.3} );
-			for(var i = 0; i <= resolution; i++) {
-			    var segment = ( i * size ) * Math.PI / 180;
-			    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         
+				var geometry = new THREE.Geometry();
+				var material = new THREE.LineBasicMaterial( { color: this.orbitColor } );
+				for(var i = 0; i <= resolution; i++) {
+				    var segment = ( i * size ) * Math.PI / 180;
+				    geometry.vertices.push( new THREE.Vector3( Math.cos( segment ) * amplitude, 0, Math.sin( segment ) * amplitude ) );         
+				}
+
+				var line = new THREE.Line( geometry, material );
+				planetContainer.add(line);
+				// Create Orbit Lines END
 			}
-
-			var line = new THREE.Line( geometry, material );
-			planetContainer.add(line);
-			// Create Orbit Lines END
 
 			if(typeof this.planet.orbit == "object") {
 				planetContainer.rotation.set(this.planet.orbit.rotation.x, this.planet.orbit.rotation.y, this.planet.orbit.rotation.z);
@@ -116,7 +122,7 @@ PlanetBody = function(data, planet) {
 		if(typeof this.planet.moons == "object") {
 			for(i in this.planet.moons) {
 				this.planet.moonObjects[i] = new PlanetBody({x: 0, y: 0, z: 0}, this.planet.moons[i]);
-				var moon = this.planet.moonObjects[i].createPlanet();
+				var moon = this.planet.moonObjects[i].createPlanet(true, 0x222222);
 				planetObject.add(moon);
 			}
 		}

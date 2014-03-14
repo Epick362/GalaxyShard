@@ -33,6 +33,8 @@ Player = function(name, data) {
 		this.controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 		this.controls.minDistance = 0.1;
 
+		this.ui.create();
+
 		socket.emit('fetch.players');
 	}
 
