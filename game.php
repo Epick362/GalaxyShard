@@ -18,7 +18,7 @@
 		<div id="interface">
 			<div class="version">GalaxyShard Alpha</div>
 			<div class="velocity">
-				<input type="text" class="dial" id="currentSpeed" value="0" data-fgColor="#FF9045" data-bgColor="#3D3D3D" />
+				<input type="text" class="dial" id="currentSpeed" value="0" data-fgColor="#FF9045" data-bgColor="#3D3D3D" data-readonly="true" />
 			</div>
 		</div>
 		<div id="webgl"></div>
@@ -52,8 +52,7 @@
 					'min': 0,
 					'thickness' : 0.4,
 					'angleOffset' : -125,
-					'angleArc' : 250,
-					'readonly' : true
+					'angleArc' : 250
 		        });
 			});
 		</script>

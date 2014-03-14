@@ -6,8 +6,8 @@ var _ = require('underscore');
  *------------------------------*/
 function Player(data) {
 	this.name = data.name || "ServerError";
-	this.position = data.position || {};
-	this.rotation = data.rotation || {};
+	this.position = data.ship.position || {};
+	this.rotation = data.ship.rotation || {};
 	this.ship = data.ship;
 }
 
@@ -45,7 +45,7 @@ io.sockets.on('connection', function (socket) {
 		players[data.name].position = data.position;
 		players[data.name].rotation = data.rotation;
 
-		users.findAndModify({ name: data.name }, { $set: { position: players[data.name].position, rotation: players[data.name].rotation } });
+		users.findAndModify({ name: data.name }, { $set: { "ships.0.position": players[data.name].position, "ships.0.rotation": players[data.name].rotation } });
   	});
 
   	/*------------------------------
