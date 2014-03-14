@@ -79,7 +79,7 @@ function initWorld() {
 		view = new View(viewMode, data.system);
 		scene.add(view.InitializeWorld());
 
-		player = new Player(playerName, data.ship);
+		player = new Player(playerName, data.user);
 		player.createShip(scene, camera, renderer, true);
 		scene.add(player.getShip());
 

@@ -1,8 +1,8 @@
-Player = function(name, data) {
+Player = function(name, user) {
 	this.name = name;
-	this.data = data;
+	this.user = user;
 
-	this.ui = new UI(this.data);
+	this.ui = new UI(this.user);
 
 	var shipContainer = new THREE.Object3D();
 
@@ -19,14 +19,15 @@ Player = function(name, data) {
 	);
 
 	this.createShip = function(scene, camera, renderer) {
-		ship = new Ship(this.data, this.name);
+		ship = new Ship(this.user, this.name);
 
 		ship.loadModel(function(object3d) {
 			shipContainer.add(object3d)
 		});
+		console.log(this.user);
 
-		bounding.position.set(this.data.position.x, this.data.position.y, this.data.position.z);
-		bounding.rotation.set(this.data.rotation.x, this.data.rotation.y, this.data.rotation.z);
+		bounding.position.set(this.user.ship.position.x, this.user.ship.position.y, this.user.ship.position.z);
+		bounding.rotation.set(this.user.ship.rotation.x, this.user.ship.rotation.y, this.user.ship.rotation.z);
 		bounding.add(shipContainer);
 		bounding.name = this.name;
 		

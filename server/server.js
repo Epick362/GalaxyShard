@@ -3,10 +3,10 @@ var io = require('socket.io').listen(8080);
 /*------------------------------
  * Player class
  *------------------------------*/
-function Player(name, data) {
-	this.name = name;
-	this.position = data.position;
-	this.rotation = data.rotation;
+function Player(data) {
+	this.name = data.name || "ServerError";
+	this.position = data.position || {};
+	this.rotation = data.rotation || {};
 	this.ship = data.ship;
 }
 
@@ -14,39 +14,28 @@ var players = {};
 
 // Establish DB connection
 var db = require('monk')('localhost/galaxyshard')
-  , users = db.get('ships')
+  , users = db.get('users')
+  , ships = db.get('ships')
   , systems = db.get('systems')
 
 io.sockets.on('connection', function (socket) {
-	//hash of players active
-	
 	socket.on('connect', function(data) {
-		users.findOne({name: data.name}).success( function (ship) {
-			if(ship) {
-				systems.findById(ship.location, function(err, system) {
-					var response = {
-						"ship" : ship,
-						"system" : system
-					};
-					console.log('Connected: '+data.name);
-					players[data.name] = new Player(data.name, ship);
-					socket.emit('connected', response);	
-				});
-			}else{
-				var p = {
-					position: {x: 15, y: 0, z: 15},
-					rotation: {x: 0, y: 0, z: 0},
-					ship: "Shuttle01",
-					location: "53167e61a4b8a311ec37216e"
-				};
-				users.insert({name: data.name, position: p.position, rotation: p.rotation, ship: p.ship}, function (err, doc) {
-					if(err) throw err;
+		users.findOne({name: data.name}).success( function (user) {
+			if(user) {
+				ships.findOne({ship: user.ships[0].name}).on('success', function(ship) {
+					user.ship = ship;
 
-					console.log('User created: '+data.name);
-					players[data.name] = new Player(data.name, p);
-					socket.emit('connected', p);	
+					systems.findById(user.ships[0].location, function(err, system) {
+						var response = {
+							"user" : user,
+							"system" : system
+						};
+						console.log('Connected: '+data.name);
+						players[data.name] = new Player(user);
+						socket.emit('connected', response);	
+					});
 				});
-			}		
+			}	
 		});
 	});
 	

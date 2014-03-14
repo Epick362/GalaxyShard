@@ -47,7 +47,7 @@ Entity = function(data) {
 Ship = function(data, name) {
 	this.name = name;
 	this.data = data;
-	this.model = this.data.ship;
+	this.model = this.data.ship.ship;
 }
 Ship.prototype = new Entity();
 
