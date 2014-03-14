@@ -1,4 +1,5 @@
 var io = require('socket.io').listen(8080);
+var _ = require('underscore');
 
 /*------------------------------
  * Player class
@@ -23,7 +24,7 @@ io.sockets.on('connection', function (socket) {
 		users.findOne({name: data.name}).success( function (user) {
 			if(user) {
 				ships.findOne({ship: user.ships[0].name}).on('success', function(ship) {
-					user.ship = ship;
+					user.ship = _.extend(user.ships[0], ship);
 
 					systems.findById(user.ships[0].location, function(err, system) {
 						var response = {

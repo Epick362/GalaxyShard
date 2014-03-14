@@ -18,7 +18,7 @@
 		<div id="interface">
 			<div class="version">GalaxyShard Alpha</div>
 			<div class="velocity">
-				<input type="text" class="dial" id="currentSpeed" data-readonly="true" value="0" style="display:none;"/>
+				<input type="text" class="dial" id="currentSpeed" value="0" data-fgColor="#FF9045" data-bgColor="#3D3D3D" />
 			</div>
 		</div>
 		<div id="webgl"></div>
@@ -45,7 +45,18 @@
 		<script src="game/core/player.js"></script>
 		<script src="game/core/view.js"></script>
 
-		<script src="main.js"></script>  
+		<script src="main.js"></script> 
+		<script>
+			$(function() {
+				$(".dial").knob({
+					'min': 0,
+					'thickness' : 0.4,
+					'angleOffset' : -125,
+					'angleArc' : 250,
+					'readonly' : true
+		        });
+			});
+		</script>
 		<script type="text/javascript" src="server/node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.min.js"></script>
 	</body>
 </html>

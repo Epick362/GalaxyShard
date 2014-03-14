@@ -24,7 +24,6 @@ Player = function(name, user) {
 		ship.loadModel(function(object3d) {
 			shipContainer.add(object3d)
 		});
-		console.log(this.user);
 
 		bounding.position.set(this.user.ship.position.x, this.user.ship.position.y, this.user.ship.position.z);
 		bounding.rotation.set(this.user.ship.rotation.x, this.user.ship.rotation.y, this.user.ship.rotation.z);
@@ -33,6 +32,8 @@ Player = function(name, user) {
 		
 		this.controls = new THREE.PlayerControls(bounding, scene, shipContainer, camera, renderer.domElement);
 		this.controls.minDistance = 0.1;
+		this.controls.maxSpeed = this.user.ship.maxSpeed;
+		this.controls.acceleration = this.user.ship.acceleration;
 
 		this.ui.create();
 

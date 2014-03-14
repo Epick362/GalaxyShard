@@ -48,8 +48,8 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		JUMP: 32,
 	};
 
-	this.maxSpeed = 12;
-	this.acceleration = 0.02;
+	this.maxSpeed = 0;
+	this.acceleration = 0;
 
 	this.rotationVector = new THREE.Vector3(0, 0, 0);
 
