@@ -93,8 +93,6 @@ PlanetBody = function(data, planet) {
 		planetContainer.add(planetObject)
 		planetContainer.name = this.planet.name;
 
-		console.log(this.planet.name+" "+this.drawOrbit+" "+this.orbitColor);
-
 		if(this.planet.orbit != false) {
 			if(this.drawOrbit) {
 				// Create Orbit Lines

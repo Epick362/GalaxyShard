@@ -40,7 +40,6 @@ io.sockets.on('connection', function (socket) {
 		});
 	});
 	
-
 	socket.on('player.move', function (data) {
 		players[data.name].position = data.position;
 		players[data.name].rotation = data.rotation;
@@ -51,7 +50,7 @@ io.sockets.on('connection', function (socket) {
   	/*------------------------------
   	 * Fetch players
   	 *------------------------------*/
-  	socket.on('fetch.players', function(data) {
-		io.sockets.emit('fetch.players', players);
+  	socket.on('fetch.entities', function(data) {
+		io.sockets.emit('fetch.entities', players);
   	});
 });

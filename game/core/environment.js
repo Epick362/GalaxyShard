@@ -100,6 +100,16 @@ Environment = function(data) {
 		return solarsystem;
 	};
 
+	this.LoadEntities = function() {
+		this.entities = [];
+
+		socket.on('fetch.entities', function(data) {
+			for(i in data) {
+				this.entities[data.name] = new Ship(data.name, data);
+			}
+		});
+	};
+ 
 	this.update = function(camera) {
 		this.camera = camera;
 		for (var i in this.planets) {

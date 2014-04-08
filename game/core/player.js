@@ -5,6 +5,11 @@ Player = function(name, user) {
 	this.ui = new UI(this.user);
 
 	var shipContainer = new THREE.Object3D();
+	shipContainer.userData = {
+		entity: 'ship',
+		name: this.name,
+		model: this.user.ship.model
+	};
 
 	var bounding = new Physijs.SphereMesh(
 		new THREE.SphereGeometry(.01, 64, 64),
@@ -37,7 +42,7 @@ Player = function(name, user) {
 
 		this.ui.create();
 
-		socket.emit('fetch.players');
+		socket.emit('fetch.entities');
 	}
 
 	this.syncPlayer = function() {
