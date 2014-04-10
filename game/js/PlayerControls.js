@@ -50,8 +50,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 
 	this.maxSpeed = 0;
 	this.acceleration = 0;
-
-	this.rotationVector = new THREE.Vector3(0, 0, 0);
+	this.rollSpeed = 0.005;
 
 	// internals
 	var scope = this;
@@ -82,6 +81,12 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 	};
 	var state = STATE.NONE;
 	var key_state = [];
+
+	this.tmpQuaternion = new THREE.Quaternion();
+
+	this.moveState = { up: 0, down: 0, left: 0, right: 0, forward: 0, back: 0, pitchUp: 0, pitchDown: 0, yawLeft: 0, yawRight: 0, rollLeft: 0, rollRight: 0 };
+	this.moveVector = new THREE.Vector3( 0, 0, 0 );
+	this.rotationVector = new THREE.Vector3( 0, 0, 0 );
 
 	// events
 	var changeEvent = {
@@ -152,73 +157,49 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		return velocity;
 	}
 
+	this.updateMovementVector = function() {
+
+		var forward = ( this.moveState.forward || velocity > 0 ) ? 1 : 0;
+
+		this.moveVector.x = ( -this.moveState.left    + this.moveState.right );
+		this.moveVector.y = ( -this.moveState.down    + this.moveState.up );
+		this.moveVector.z = ( -forward + this.moveState.back );
+
+		console.log( 'move:', [ this.moveVector.x, this.moveVector.y, this.moveVector.z ] );
+
+	};
+
+	this.updateRotationVector = function() {
+
+		this.rotationVector.x = ( -this.moveState.pitchDown + this.moveState.pitchUp );
+		this.rotationVector.y = ( -this.moveState.yawRight  + this.moveState.yawLeft );
+		this.rotationVector.z = ( -this.moveState.rollRight + this.moveState.rollLeft );
+
+		console.log( 'rotate:', [ this.rotationVector.x, this.rotationVector.y, this.rotationVector.z ] );
+
+	};
+
 	this.update = function (delta) {
-		if (key_state.indexOf(this.keys.UP) > -1) {
-			if(velocity + this.acceleration < this.maxSpeed) {
-				velocity += this.acceleration;
-			}else{
-				velocity = this.maxSpeed;
-			}
-			this.player.rotation.set(0, 0, 0);
+		var moveMult = delta * velocity;
+		var rotMult = delta * this.rollSpeed;
 
-			this.moving = true;
+		this.anchor.translateX( this.moveVector.x * moveMult );
+		this.anchor.translateY( this.moveVector.y * moveMult );
+		this.anchor.translateZ( this.moveVector.z * moveMult );
 
-			// forward
-		} else if (key_state.indexOf(this.keys.DOWN) > -1) {
-			if(velocity - this.acceleration >= 0) {
-				velocity -= this.acceleration;
-			}else{
-				velocity = 0;
-			}
-			this.player.rotation.set(0, 0, 0);
+		this.tmpQuaternion.set( this.rotationVector.x * rotMult, this.rotationVector.y * rotMult, this.rotationVector.z * rotMult, 1 ).normalize();
+		this.anchor.quaternion.multiply( this.tmpQuaternion );
 
-			this.moving = true;
-
-			//back
-		} else if (this.moving) {
-			this.player.rotation.set(0, 0, 0);
-			if(velocity - this.acceleration/10 >= 0) {
-				velocity -= this.acceleration/10;
-			}else{
-				velocity = 0;
-			}
-		}
+		// expose the rotation vector for convenience
+		this.anchor.rotation.setFromQuaternion( this.anchor.quaternion, this.anchor.rotation.order );
 
 		if(velocity == 0) {
-			this.moving = false;
 			this.particleEmitter.disable();
 		}else{
 			this.particleEmitter.enable();
 		}
 
-		//turn
-		if (key_state.indexOf(this.keys.LEFT) > -1 && key_state.indexOf(this.keys.RIGHT) < 0) {
-			if(this.rotationVector.y < Math.PI/2) {
-				this.rotationVector.y += Math.PI/90;
-			}
-			this.turning = true;
-			//turning
-		} else if (key_state.indexOf(this.keys.RIGHT) > -1) {
-			if(this.rotationVector.y > -Math.PI/2) {
-				this.rotationVector.y -= Math.PI/90;
-			}
-			this.turning = true;
-			//turning
-		} else if (this.turning && this.rotationVector.y != 0) {
-			this.rotationVector.y -= this.rotationVector.y / 45;
-		} else if (this.turning) {
-			this.turning = false;
-		}
-
-		// set rotation
-		this.anchor.setAngularVelocity(this.rotationVector);
-
-		// set the speed
-		var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
-		var force_vector = new THREE.Vector3(0, 0, velocity).applyMatrix4(rotation_matrix);
-		this.anchor.setLinearVelocity(force_vector);
-
-
+		// camera position
 		var position = this.camera.position;
 		var offset = position.clone().sub(this.center);
 
@@ -303,6 +284,7 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 			lastPosition.copy(this.camera.position);
 		}
 
+		var rotation_matrix = new THREE.Matrix4().extractRotation(this.anchor.matrix);
 		var engineOffset = new THREE.Vector3(0, 0, -0.03).applyMatrix4(rotation_matrix);
 		this.particleEmitter.position.copy(this.anchor.position).add(engineOffset);
 		this.particleEmitter.velocity = new THREE.Vector3(0, 0, velocity/4).applyMatrix4(rotation_matrix);
@@ -392,60 +374,86 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 		}
 	}
 
-	function onKeyDown(event) {
-		if (scope.enabled === false) return;
-		switch (event.keyCode) {
-			case scope.keys.UP:
-				var index = key_state.indexOf(scope.keys.UP);
-				if (index == -1) key_state.push(scope.keys.UP);
-				break;
-			case scope.keys.DOWN:
-				var index = key_state.indexOf(scope.keys.DOWN);
-				if (index == -1) key_state.push(scope.keys.DOWN);
-				break;
-			case scope.keys.LEFT:
-				var index = key_state.indexOf(scope.keys.LEFT);
-				if (index == -1) key_state.push(scope.keys.LEFT);
-				break;
-			case scope.keys.RIGHT:
-				var index = key_state.indexOf(scope.keys.RIGHT);
-				if (index == -1) key_state.push(scope.keys.RIGHT);
-				break;
-			case scope.keys.JUMP:
-				var index = key_state.indexOf(scope.keys.JUMP);
-				if (index == -1) key_state.push(scope.keys.JUMP);
-				break;
-		}
-	}
+	function onKeyDown( event ) {
 
-	function onKeyUp(event) {
-		switch (event.keyCode) {
-			case scope.keys.UP:
-				var index = key_state.indexOf(scope.keys.UP);
-				if (index > -1) key_state.splice(index, 1);
-				break;
-			case scope.keys.DOWN:
-				var index = key_state.indexOf(scope.keys.DOWN);
-				if (index > -1) key_state.splice(index, 1);
-				break;
-			case scope.keys.LEFT:
-				var index = key_state.indexOf(scope.keys.LEFT);
-				if (index > -1) key_state.splice(index, 1);
-				break;
-			case scope.keys.RIGHT:
-				var index = key_state.indexOf(scope.keys.RIGHT);
-				if (index > -1) key_state.splice(index, 1);
-				break;
-			case scope.keys.JUMP:
-				var index = key_state.indexOf(scope.keys.JUMP);
-				if (index > -1) key_state.splice(index, 1);
-				break;
+		if ( event.altKey ) {
+
+			return;
+
 		}
-	}
+
+		//event.preventDefault();
+
+		switch ( event.keyCode ) {
+			case 87: /*W*/ this.moveState.forward = 1; break;
+			case 83: /*S*/ this.moveState.back = 1; break;
+
+			case 65: /*A*/ this.moveState.left = 1; break;
+			case 68: /*D*/ this.moveState.right = 1; break;
+
+			case 82: /*R*/ this.moveState.up = 1; break;
+			case 70: /*F*/ this.moveState.down = 1; break;
+
+			case 38: /*up*/ this.moveState.pitchUp = 1; break;
+			case 40: /*down*/ this.moveState.pitchDown = 1; break;
+
+			case 37: /*left*/ this.moveState.yawLeft = 1; break;
+			case 39: /*right*/ this.moveState.yawRight = 1; break;
+
+			case 81: /*Q*/ this.moveState.rollLeft = 1; break;
+			case 69: /*E*/ this.moveState.rollRight = 1; break;
+
+		}
+
+		this.updateMovementVector();
+		this.updateRotationVector();
+
+	};
+
+	function onKeyUp( event ) {
+
+		switch( event.keyCode ) {
+			case 87: /*W*/ this.moveState.forward = 0; break;
+			case 83: /*S*/ this.moveState.back = 0; break;
+
+			case 65: /*A*/ this.moveState.left = 0; break;
+			case 68: /*D*/ this.moveState.right = 0; break;
+
+			case 82: /*R*/ this.moveState.up = 0; break;
+			case 70: /*F*/ this.moveState.down = 0; break;
+
+			case 38: /*up*/ this.moveState.pitchUp = 0; break;
+			case 40: /*down*/ this.moveState.pitchDown = 0; break;
+
+			case 37: /*left*/ this.moveState.yawLeft = 0; break;
+			case 39: /*right*/ this.moveState.yawRight = 0; break;
+
+			case 81: /*Q*/ this.moveState.rollLeft = 0; break;
+			case 69: /*E*/ this.moveState.rollRight = 0; break;
+
+		}
+
+		this.updateMovementVector();
+		this.updateRotationVector();
+
+	};
+
+	function bind( scope, fn ) {
+
+		return function () {
+
+			fn.apply( scope, arguments );
+
+		};
+
+	};
 
 	this.domElement.addEventListener('mousedown', onMouseDown, false);
 	this.domElement.addEventListener('mousewheel', onMouseWheel, false);
 	this.domElement.addEventListener('DOMMouseScroll', onMouseWheel, false); // firefox
-	window.addEventListener('keydown', onKeyDown, false);
-	window.addEventListener('keyup', onKeyUp, false);
+	window.addEventListener( 'keydown', bind( this, onKeyDown ), false );
+	window.addEventListener( 'keyup',   bind( this, onKeyUp ), false );
+
+	this.updateMovementVector();
+	this.updateRotationVector();
 };
