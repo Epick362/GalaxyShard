@@ -438,21 +438,11 @@ THREE.PlayerControls = function (anchor, scene, player, camera, domElement) {
 
 	};
 
-	function bind( scope, fn ) {
-
-		return function () {
-
-			fn.apply( scope, arguments );
-
-		};
-
-	};
-
 	this.domElement.addEventListener('mousedown', onMouseDown, false);
 	this.domElement.addEventListener('mousewheel', onMouseWheel, false);
 	this.domElement.addEventListener('DOMMouseScroll', onMouseWheel, false); // firefox
-	window.addEventListener( 'keydown', bind( this, onKeyDown ), false );
-	window.addEventListener( 'keyup',   bind( this, onKeyUp ), false );
+	window.addEventListener( 'keydown', onKeyDown.bind(this), false );
+	window.addEventListener( 'keyup',   onKeyUp.bind(this), false );
 
 	this.updateMovementVector();
 	this.updateRotationVector();
