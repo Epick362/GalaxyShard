@@ -2,7 +2,7 @@
 var width  = window.innerWidth,
 	height = window.innerHeight;
 
-var viewMode = 1; // 0 = Orbital / 1 = System / 2 = Galaxy 
+var viewMode = 1; // 0 = Orbital / 1 = System / 2 = Galaxy
 
 var gradientCanvas;
 var gradientImage;
@@ -49,7 +49,7 @@ function postStarGradientLoaded() {
 		shaderList = e;
 
 		initWorld();
-	});	
+	});
 }
 
 function initWorld() {
@@ -70,12 +70,13 @@ function initWorld() {
 
 	scene.add(new THREE.AmbientLight(0x444444));
 
-	socket = io.connect('http://localhost:8080');
+	socket = io.connect('http://galaxyshard.dev:8080');
 
 	playerName = prompt('Enter name');
 
 	socket.emit('connect', {'name': playerName});
 	socket.on('connected', function(data) {
+		console.log('EHE');
 		view = new View(viewMode, data.system);
 		scene.add(view.InitializeWorld());
 
@@ -87,17 +88,17 @@ function initWorld() {
 			console.log("Synchronize Player Position");
 			player.syncPlayer();
 		}, 2000);
-		
+
 	    scene.simulate();
 		render();
-	});	
+	});
 
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
 	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.top = '0px';	
+	stats.domElement.style.top = '0px';
 	stats.domElement.style.right = '0px';
-	document.body.appendChild( stats.domElement );	
+	document.body.appendChild( stats.domElement );
 
 	webglEl.appendChild(renderer.domElement);
 
